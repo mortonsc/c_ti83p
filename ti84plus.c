@@ -122,7 +122,7 @@ void EnableAPD() __naked
         rst #0x28
         .dw #0x4C87
         ret
-    __endasm
+    __endasm;
 }
 
 void DisableAPD() __naked
@@ -131,6 +131,6 @@ void DisableAPD() __naked
         rst #0x28
         .dw #0x4C84
         ret
-    __endasm
+    __endasm;
 }
 
