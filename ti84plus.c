@@ -116,3 +116,21 @@ void LowerCaseOff() __naked
     __endasm;
 }
 
+void EnableAPD() __naked
+{
+    __asm
+        rst #0x28
+        .dw #0x4C87
+        ret
+    __endasm
+}
+
+void DisableAPD() __naked
+{
+    __asm
+        rst #0x28
+        .dw #0x4C84
+        ret
+    __endasm
+}
+

@@ -78,4 +78,7 @@ void TextInvertOff() __naked;
 void LowerCaseOn() __naked;
 void LowerCaseOff() __naked;
 
+void EnableAPD() __naked;
+void DisableAPD() __naked;
+
 #endif
