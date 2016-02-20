@@ -47,7 +47,13 @@ __at 0x844B unsigned char curRow;
 __at 0x86D7 unsigned char penCol;
 __at 0x86D8 unsigned char penRow;
 
+/* number of bytes in a buffer */
+/* equal to (SCREEN_WIDTH * SCREEN_HEIGHT) / 8 */
 #define BUFFER_SIZE 768
+/* width of the screen, in pixels */
+#define SCREEN_WIDTH 96
+/* height of the screen, in pixels */
+#define SCREEN_HEIGHT 64
 
 __at 0x9340 unsigned char plotSScreen[BUFFER_SIZE];
 __at 0x9872 unsigned char appBackUpScreen[BUFFER_SIZE];
