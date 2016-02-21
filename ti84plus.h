@@ -41,6 +41,57 @@
 #define L_THETA      '\x5B'
 #define L_INV_EQ     '\x7F'
 
+/* GetCSC keycodes */
+#define skDown      0x01
+#define skLeft      0x02
+#define skRight     0x03
+#define skUp        0x04
+#define skEnter     0x09
+#define skAdd       0x0A
+#define skSub       0x0B
+#define skMul       0x0C
+#define skDiv       0x0D
+#define skPower     0x0E
+#define skClear     0x0F
+#define skChs       0x11
+#define sk3	        0x12
+#define sk6	        0x13
+#define sk9	        0x14
+#define skRParen    0x15
+#define skTan       0x16
+#define skVars      0x17
+#define skDecPnt    0x19
+#define sk2         0x1A
+#define sk5         0x1B
+#define sk8         0x1C
+#define skLParen    0x1D
+#define skCos       0x1E
+#define skPrgm      0x1F
+#define skStat      0x20
+#define sk0	        0x21
+#define sk1	        0x22
+#define sk4         0x23
+#define sk7         0x24
+#define skComma     0x25
+#define skSin       0x26
+#define skMatrix    0x27
+#define skGraphvar  0x28
+#define skStore     0x2A
+#define skLn        0x2B
+#define skLog       0x2C
+#define skSquare    0x2D
+#define skRecip     0x2E
+#define skMat       0x2F
+#define skAlpha     0x30
+#define skGraph     0x31
+#define skTrace     0x32
+#define skZoo       0x33
+#define skWindow    0x34
+#define skYEqu      0x35
+#define sk2nd       0x36
+#define skMode      0x37
+#define skDel       0x38
+
 __at 0x844C unsigned char curCol;
 __at 0x844B unsigned char curRow;
 
@@ -71,6 +122,8 @@ void PutMap(char c);
 void VPutS(const char *s);
 
 unsigned char GetKey() __naked;
+
+unsigned char GetCSC() __naked;
 
 void TextInvertOn() __naked;
 void TextInvertOff() __naked;

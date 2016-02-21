@@ -84,6 +84,16 @@ unsigned char GetKey() __naked
     __endasm;
 }
 
+unsigned char GetCSC() __naked
+{
+    __asm
+        rst #0x28
+        .dw #0x4018
+        ld l,a
+        ret
+    __endasm;
+}
+
 void TextInvertOn() __naked
 {
     __asm
