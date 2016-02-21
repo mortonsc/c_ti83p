@@ -6,6 +6,11 @@
 ; retrieved 2 Feb 2016
 ; modified to be SDCC-compatible
         .globl _FastCopy
+
+        .area DATA
+
+_plotSScreen = 0x9340
+
         .area OSEG
 
 _FastCopy:
@@ -13,8 +18,7 @@ _FastCopy:
         ld a,#0x80
         out (#0x10),a
 
-        ;; ld hl,gbuf-12-(-(12*64)+1)
-        ld hl,#0x9633
+        ld hl, #_plotSScreen-12-(-(12*64)+1)
 
         ld a,#0x20
         ld c,a
