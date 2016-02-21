@@ -126,6 +126,22 @@ void LowerCaseOff() __naked
     __endasm;
 }
 
+void RunIndicatorOn() __naked
+{
+    __asm
+        set 0,0x12(iy)
+        ret
+    __endasm;
+}
+
+void RunIndicatorOff() __naked
+{
+    __asm
+        res 0,0x12(iy)
+        ret
+    __endasm;
+}
+
 void EnableAPD() __naked
 {
     __asm
