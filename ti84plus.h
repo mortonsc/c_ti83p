@@ -1,6 +1,16 @@
 #ifndef _TI_84_PLUS_INC_H_
 #define _TI_84_PLUS_INC_H_ 1
 
+/*
+ * Code by Scott Morton 2016
+ *
+ * This is just a (very) partial translation of the standard ti83plus.inc file
+ * into C. I've just been adding functions to it as I need them.
+ *
+ * Most of the names for functions and constants are take from ti83plus.inc,
+ * sometimes with changes to formatting.
+ */
+
 /* special TI font character codes */
 #define L_RECUR_N    '\x01'
 #define L_RECUR_U    '\x02'
@@ -92,48 +102,114 @@
 #define skMode      0x37
 #define skDel       0x38
 
+/*
+ * These two variables specify the location where large text will be displayed.
+ * Calling PutC or PutS will change their values.
+ */
 __at 0x844C unsigned char curCol;
 __at 0x844B unsigned char curRow;
 
+/*
+ * These two variables specify the location where small text will be displayed.
+ * Calling PutMap or VPutS will change their values.
+ * Note that their values are measured in pixels, so if you want to go to
+ * a new row of text, incrementing penRow will not be sufficient.
+ */
 __at 0x86D7 unsigned char penCol;
 __at 0x86D8 unsigned char penRow;
 
-/* number of bytes in a buffer */
-/* equal to (SCREEN_WIDTH * SCREEN_HEIGHT) / 8 */
+/*
+ * number of bytes in a buffer
+ * equal to (SCREEN_WIDTH*SCREEN_HEIGHT) / 8
+ */
 #define BUFFER_SIZE 768
+
 /* width of the screen, in pixels */
 #define SCREEN_WIDTH 96
 /* height of the screen, in pixels */
 #define SCREEN_HEIGHT 64
 
+/*
+ * This area of RAM stores the text displayed on the graph screen.
+ * It is useful as a buffer to modify the screen, so that is can be updated
+ * all at once.
+ */
 __at 0x9340 unsigned char plotSScreen[BUFFER_SIZE];
+
+/*
+ * This block of RAM is unused by the calculator, so it's useful as backup
+ * memory, or to store another version of the screen.
+ */
 __at 0x9872 unsigned char appBackUpScreen[BUFFER_SIZE];
+
+/*
+ * This block of RAM is only used by the calculator is automatic power down
+ * is on. If you disable APD it can be used for more additional memory.
+ */
 __at 0x86EC unsigned char saveSScreen[BUFFER_SIZE];
 
+/*
+ * Updates the LCD to reflect the contents of plotSScreen.
+ * Each block of 12 bytes corresponds to a row of the LCD,
+ * starting with the top.
+ * Within each row, each bit indicates whether the corresponding pixel is
+ * on or off. The first byte represents the 8 leftmost pixels.
+ *
+ * Note that there are asm programs available that will do this much faster.
+ */
 void GrBufCpy() __naked;
 
+/* clears the LCD */
 void ClrLCDFull() __naked;
+
 void NewLine() __naked;
 
+/* prints c in the large font */
 void PutC(char c);
+/* prints s in the large font */
 void PutS(const char *s);
 
+/* prints c in the small font */
 void PutMap(char c);
+/* prints s in the small font */
 void VPutS(const char *s);
 
+/* waits for the user to press a key, then returns the keycode */
 unsigned char GetKey() __naked;
 
+/*
+ * if the user is currently pressing a key, returns its keycode
+ * note that this function uses different codes than GetKey()
+ */
 unsigned char GetCSC() __naked;
 
+/* While TextInvert is on, printed text will be inverted (white on black) */
 void TextInvertOn() __naked;
 void TextInvertOff() __naked;
 
+/*
+ * While LowerCase mode is on, the user can enter lowercase characters by
+ * pressing [Alpha] twice.
+ * Note that LowerCase does *not* need to be on in order to print lowercase
+ * letters using functions like PutC. It only affects the user's ability
+ * to input lowercase letters.
+ */
 void LowerCaseOn() __naked;
 void LowerCaseOff() __naked;
 
+/*
+ * Turn the run indicator on or off. The run indicator is the little animation
+ * in the upper right corner that plays while the calculator is performing
+ * calculations or waiting for input.
+ */
 void RunIndicatorOn() __naked;
 void RunIndicatorOff() __naked;
 
+/*
+ * Enable/disable automatic power down (APD). This is mainly useful because
+ * saveSScreen is only usable for memory if APD is disabled.
+ * ALWAYS remember to turn APD back on before the program terminates.
+ */
 void EnableAPD() __naked;
 void DisableAPD() __naked;
 

@@ -1,6 +1,17 @@
 #include <string.h>
 #include "ti84plus.h"
 
+/*
+ * Code by Scott Morton 2016
+ *
+ * These functions are mostly C wrappers for various ROM calls.
+ * A few turn flags on or off.
+ * The sequence
+ *      rst #0x28
+ *      .dw #0xNNNN
+ * calls the ROM function located at address NNNN.
+ */
+
 void GrBufCpy() __naked
 {
     __asm
