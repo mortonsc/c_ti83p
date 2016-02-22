@@ -221,7 +221,11 @@ void RunIndicatorOff() __naked;
 void EnableAPD() __naked;
 void DisableAPD() __naked;
 
-/* tell the processor to run at 15MHz. Does nothing on TI83+. */
+/*
+ * Enable/disable running the CPU at 15MHz. (It defaults to 6MHz.)
+ * The TI83+ is not capable of running at 15MHz, so these functions do nothing.
+ */
 void Enable15MHz() __naked;
+void Disable15MHz() __naked;
 
 #endif

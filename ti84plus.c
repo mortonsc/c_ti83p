@@ -192,3 +192,12 @@ void Enable15MHz() __naked
     __endasm;
 }
 
+void Disable15MHz() __naked
+{
+    __asm
+        ld a,#0
+        out (#0x20),a
+        ret
+    __endasm;
+}
+
