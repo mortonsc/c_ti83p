@@ -177,3 +177,18 @@ void DisableAPD() __naked
     __endasm;
 }
 
+/*
+ * Code taken from wikiti (https://www.cemetech.net/forum/viewtopic.php?t=7087)
+ */
+void Enable15MHz() __naked
+{
+    __asm
+        in a,(2)
+        and #0x80
+        ret z ; No CPU governor on this calc
+        rlca
+        out (#0x20),a
+        ret
+    __endasm;
+}
+
