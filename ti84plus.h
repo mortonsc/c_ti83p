@@ -135,9 +135,13 @@ __at 0x86D8 unsigned char penRow;
 #define SCREEN_HEIGHT 64
 
 /*
- * This area of RAM stores the text displayed on the graph screen.
- * It is useful as a buffer to modify the screen, so that is can be updated
- * all at once.
+ * This area of RAM stores the current contents of the graph screen.
+ * Each pixel is represented by a single bit: 1 for on, 0 for off.
+ * Each row of the screen corresponds to 12 contiguous bytes.
+ * The first bit represents the leftmost pixel of the top row.
+ *
+ * plotSScreen is useful as a buffer to modify the screen,
+ * so that it can be updated all at once.
  */
 __at 0x9340 unsigned char plotSScreen[BUFFER_SIZE];
 
@@ -155,10 +159,6 @@ __at 0x86EC unsigned char saveSScreen[BUFFER_SIZE];
 
 /*
  * Updates the LCD to reflect the contents of plotSScreen.
- * Each block of 12 bytes corresponds to a row of the LCD,
- * starting with the top.
- * Within each row, each bit indicates whether the corresponding pixel is
- * on or off. The first byte represents the 8 leftmost pixels.
  *
  * Note that there are asm programs available that will do this much faster.
  */
@@ -188,7 +188,10 @@ unsigned char GetKey() __naked;
  */
 unsigned char GetCSC() __naked;
 
-/* While TextInvert is on, printed text will be inverted (white on black) */
+/*
+ * Any text printed after TextInvertOn is called will appear inverted
+ * (white on black), until TextInvertOff is called.
+ */
 void TextInvertOn() __naked;
 void TextInvertOff() __naked;
 
