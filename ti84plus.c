@@ -17,6 +17,7 @@ void GrBufCpy() __naked
     __asm
         rst #0x28
         .dw #0x486A
+        ret
     __endasm;
 }
 
