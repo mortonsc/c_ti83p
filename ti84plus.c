@@ -2,8 +2,13 @@
 #include "ti84plus.h"
 
 /*
- * Code by Scott Morton 2016
- *
+ * Copyright (c) 2016 Scott Morton
+ * This is free software released under the MIT license.
+ * For more information, see the LICENSE.txt file
+ * which should be bundled with this source.
+ */
+
+/*
  * These functions are mostly C wrappers for various ROM calls.
  * A few turn flags on or off.
  * The sequence

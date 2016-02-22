@@ -2,8 +2,13 @@
 #define _TI_84_PLUS_INC_H_ 1
 
 /*
- * Code by Scott Morton 2016
- *
+ * Copyright (c) 2016 Scott Morton
+ * This is free software released under the MIT license.
+ * For more information, see the LICENSE.txt file
+ * which should be bundled with this source.
+ */
+
+/*
  * This is just a (very) partial translation of the standard ti83plus.inc file
  * into C. I've just been adding functions to it as I need them.
  *
