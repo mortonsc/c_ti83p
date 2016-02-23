@@ -162,38 +162,38 @@ __at 0x86EC unsigned char saveSScreen[BUFFER_SIZE];
  *
  * Note that there are asm programs available that will do this much faster.
  */
-void GrBufCpy() __naked;
+extern void CGrBufCpy();
 
 /* clears the LCD */
-void ClrLCDFull() __naked;
+extern void CClrLCDFull();
 
-void NewLine() __naked;
+extern void CNewLine();
 
 /* prints c in the large font */
-void PutC(char c);
+extern void CPutC(char c);
 /* prints s in the large font */
-void PutS(const char *s);
+extern void CPutS(const char *s);
 
 /* prints c in the small font */
-void PutMap(char c);
+extern void CPutMap(char c);
 /* prints s in the small font */
-void VPutS(const char *s);
+extern void CVPutS(const char *s);
 
 /* waits for the user to press a key, then returns the keycode */
-unsigned char GetKey() __naked;
+extern unsigned char CGetKey();
 
 /*
  * if the user is currently pressing a key, returns its keycode
  * note that this function uses different codes than GetKey()
  */
-unsigned char GetCSC() __naked;
+extern unsigned char CGetCSC();
 
 /*
  * Any text printed after TextInvertOn is called will appear inverted
  * (white on black), until TextInvertOff is called.
  */
-void TextInvertOn() __naked;
-void TextInvertOff() __naked;
+extern void CTextInvertOn();
+extern void CTextInvertOff();
 
 /*
  * While LowerCase mode is on, the user can enter lowercase characters by
@@ -202,30 +202,30 @@ void TextInvertOff() __naked;
  * letters using functions like PutC. It only affects the user's ability
  * to input lowercase letters.
  */
-void LowerCaseOn() __naked;
-void LowerCaseOff() __naked;
+extern void CLowerCaseOn();
+extern void CLowerCaseOff();
 
 /*
  * Turn the run indicator on or off. The run indicator is the little animation
  * in the upper right corner that plays while the calculator is performing
  * calculations or waiting for input.
  */
-void RunIndicatorOn() __naked;
-void RunIndicatorOff() __naked;
+extern void CRunIndicatorOn();
+extern void CRunIndicatorOff();
 
 /*
  * Enable/disable automatic power down (APD). This is mainly useful because
  * saveSScreen is only usable for memory if APD is disabled.
  * ALWAYS remember to turn APD back on before the program terminates.
  */
-void EnableAPD() __naked;
-void DisableAPD() __naked;
+extern void CEnableAPD();
+extern void CDisableAPD();
 
 /*
  * Enable/disable running the CPU at 15MHz. (It defaults to 6MHz.)
  * The TI83+ is not capable of running at 15MHz, so these functions do nothing.
  */
-void Enable15MHz() __naked;
-void Disable15MHz() __naked;
+extern void CEnable15MHz();
+extern void CDisable15MHz();
 
 #endif
