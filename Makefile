@@ -3,7 +3,10 @@ AFLAGS=-p -g -o
 
 .PHONY: all clean
 
-all: ti83plus.rel fastcopy.rel tios_crt0.rel
+all: c_ti83p.lib
+
+c_ti83p.lib: tios_crt0.rel ti83plus.rel fastcopy.rel
+	sdar -rc c_ti83p.lib tios_crt0.rel ti83plus.rel fastcopy.rel
 
 ti83plus.rel: ti83plus.asm ti83plus.inc
 	$(ASM) $(AFLAGS) ti83plus.asm
