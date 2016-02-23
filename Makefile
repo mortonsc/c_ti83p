@@ -7,7 +7,7 @@ LIB=c_ti83p.lib
 all: $(LIB) tios_crt0.rel
 
 $(LIB): ti83plus.rel fastcopy.rel
-	sdar -rc $(LIB).lib ti83plus.rel fastcopy.rel
+	sdar -rc $(LIB) ti83plus.rel fastcopy.rel
 
 ti83plus.rel: ti83plus.asm ti83plus.inc
 	$(ASM) $(AFLAGS) ti83plus.asm
