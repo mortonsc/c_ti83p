@@ -1,12 +1,13 @@
 ASM=sdasz80
 AFLAGS=-p -g -o
+LIB=c_ti83p
 
 .PHONY: all clean
 
-all: c_ti83p.lib
+all: $(LIB).lib
 
-c_ti83p.lib: tios_crt0.rel ti83plus.rel fastcopy.rel
-	sdar -rc c_ti83p.lib tios_crt0.rel ti83plus.rel fastcopy.rel
+$(LIB).lib: tios_crt0.rel ti83plus.rel fastcopy.rel
+	sdar -rc $(LIB).lib tios_crt0.rel ti83plus.rel fastcopy.rel
 
 ti83plus.rel: ti83plus.asm ti83plus.inc
 	$(ASM) $(AFLAGS) ti83plus.asm
@@ -18,4 +19,4 @@ tios_crt0.rel: tios_crt0.s
 	$(ASM) $(AFLAGS) tios_crt0.s
 
 clean:
-	rm -f *.rel *.lst *.sym *.lk *.map *.noi
+	rm -f $(LIB).lib *.rel

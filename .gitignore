@@ -1,7 +1,3 @@
 *.swp
 *.rel
-*.lst
-*.sym
-*.lk
-*.map
-*.noi
+*.lib
