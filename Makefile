@@ -19,4 +19,4 @@ tios_crt0.rel: tios_crt0.s
 	$(ASM) $(AFLAGS) tios_crt0.s
 
 clean:
-	rm -f $(LIB).lib *.rel
+	rm -f $(LIB) *.rel
