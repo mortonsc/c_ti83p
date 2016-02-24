@@ -29,7 +29,6 @@
 	.globl _CDisableAPD
 	.globl _CEnable15MHz
 	.globl _CDisable15MHz
-        .globl _CGetAnsFP
 
 	.area _DATA
 
@@ -38,16 +37,16 @@
 	.area _CODE
 
 _CGrBufCpy::
-        bcall #_GrBufCpy
+        bcall _GrBufCpy
 	ret
 
 _CClrLCDFull::
-        bcall #_ClrLCDFull
+        bcall _ClrLCDFull
 	ret
 
 
 _CNewLine::
-	bcall #_newline
+	bcall _newline
 	ret
 
 _CPutC::
@@ -56,7 +55,7 @@ _CPutC::
 	add	ix,sp
 
 	ld a,4(ix)
-	bcall #_PutC
+	bcall _PutC
 
 	pop	ix
 	ret
@@ -69,7 +68,7 @@ _CPutS::
 
 	ld l,4(ix)
 	ld h,5(ix)
-	bcall #_PutS
+	bcall _PutS
 	pop	ix
 	ret
 
@@ -80,7 +79,7 @@ _CPutInt:
 
         ld l,4(ix)
         ld h,5(ix)
-        bcall #_DispHL
+        bcall _DispHL
         pop ix
         ret
 
@@ -90,7 +89,7 @@ _CPutMap::
 	add	ix,sp
 
 	ld a,4(ix)
-	bcall #_PutMap
+	bcall _PutMap
 	pop	ix
 	ret
 
@@ -102,20 +101,20 @@ _CVPutS::
 
 	ld l,4(ix)
 	ld h,5(ix)
-	bcall #_VPutS
+	bcall _VPutS
 
 	pop	ix
 	ret
 
 
 _CGetKey::
-	bcall #_getkey
+	bcall _getkey
 	ld l,a
 	ret
 
 
 _CGetCSC::
-        bcall #_GetCSC
+        bcall _GetCSC
 	ld l,a
 	ret
 
@@ -141,22 +140,22 @@ _CLowerCaseOff::
 
 
 _CRunIndicatorOn::
-	bcall #_RunIndicOn
+	bcall _RunIndicOn
 	ret
 
 
 _CRunIndicatorOff::
-	bcall #_RunIndicOff
+	bcall _RunIndicOff
 	ret
 
 
 _CEnableAPD::
-        bcall #_EnableApd
+        bcall _EnableApd
 	ret
 
 
 _CDisableAPD::
-	bcall #_DisableApd
+	bcall _DisableApd
 	ret
 
 
@@ -165,24 +164,12 @@ _CEnable15MHz::
 	and #0x80
 	ret z ; No CPU governor on this calc
 	rlca
-	out (#0x20),a ; port 20 controls CPU speed
+	out (0x20),a ; port 20 controls CPU speed
 	ret
 
 _CDisable15MHz::
 	ld a,#0
-	out (#0x20),a
+	out (0x20),a
 	ret
-
-_CGetAnsFP::
-        bcall #_AnsName ; stores the name of Ans in OP1
-        rst rFINDSYM
-        and #0x1f  ; FindSym stores the type in a, but bits 5-7 are garbage
-        jr nz,AnsNotFP ; 0x00 is type code for real floating point
-        ex de,hl ; de stores the address, which is what we want
-        ret
-AnsNotFP:
-        ld h,#0 ; return null if ans is not real fp
-        ld l,#0
-        ret
 
 

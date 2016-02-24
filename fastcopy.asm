@@ -9,14 +9,14 @@
 
         .area DATA
 
-_plotSScreen = 0x9340
+.include "ti83plus.inc"
 
-        .area OSEG
+        .area CODE
 
 _FastCopy:
         di
         ld a,#0x80
-        out (#0x10),a
+        out (0x10),a
 
         ld hl, #_plotSScreen-12-(-(12*64)+1)
 
@@ -28,7 +28,7 @@ fastCopyAgain:
         ld b,#64
         inc c
         ld de,#-767
-        out (#0x10),a
+        out (0x10),a
         add hl,de
         ld de,#10
 fastCopyLoop:
@@ -37,7 +37,7 @@ fastCopyLoop:
         inc hl
         inc de
         ld a,(hl)
-        out (#0x11),a
+        out (0x11),a
         dec de
         djnz fastCopyLoop
         ld a,c
