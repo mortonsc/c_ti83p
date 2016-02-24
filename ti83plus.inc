@@ -2259,6 +2259,261 @@ LcurIa  		.equ 0x0E7
 LGline          	.equ 0x0E8 ; = 0
 LGthick         	.equ 0x0E9 ; = 1
 LGabove			.equ 0x0EA ; = 2
+kRight			.equ 0x001
+kLeft			.equ 0x002
+kUp			.equ 0x003
+kDown			.equ 0x004
+kEnter			.equ 0x005
+kAlphaEnter		.equ 0x006
+kAlphaUp		.equ 0x007
+kAlphaDown		.equ 0x008
+kClear			.equ 0x009
+kDel			.equ 0x00A
+kIns			.equ 0x00B
+kRecall			.equ 0x00C
+kLastEnt		.equ 0x00D
+kBOL			.equ 0x00E
+kEOL			.equ 0x00F
+
+kSelAll			.equ 0x010
+kUnselAll		.equ 0x011
+kLtoTI82		.equ 0x012
+kBackup			.equ 0x013
+kRecieve		.equ 0x014
+kLnkQuit		.equ 0x015
+kTrans			.equ 0x016
+kRename			.equ 0x017
+kOverw			.equ 0x018
+kOmit			.equ 0x019
+kCont			.equ 0x01A
+kSendID			.equ 0x01B
+kSendSW			.equ 0x01C
+kYes			.equ 0x01D
+kNoWay			.equ 0x01E
+kvSendType		.equ 0x01F
+kOverWAll		.equ 0x020
+kNo			.equ 0x025
+kKReset			.equ 0x026
+kApp			.equ 0x027
+kDoug			.equ 0x028
+kListflag		.equ 0x029
+menuStart		.equ 0x02B
+kAreYouSure		.equ 0x02B
+kAppsMenu		.equ 0x02C
+kPrgm			.equ 0x02D
+kZoom			.equ 0x02E
+kDraw			.equ 0x02F
+kSPlot			.equ 0x030
+kStat			.equ 0x031
+kMath			.equ 0x032
+kTest			.equ 0x033
+kChar			.equ 0x034
+kVars			.equ 0x035
+kMem			.equ 0x036
+kMatrix			.equ 0x037
+kDist			.equ 0x038
+kAngle			.equ 0x039
+kList			.equ 0x03A
+kCalc			.equ 0x03B
+kFin			.equ 0x03C
+menuEnd			.equ kFin
+kCatalog		.equ 0x03E
+kInputDone		.equ 0x03F
+kOff			.equ kInputDone
+kQuit			.equ 0x040
+appStart		.equ kQuit
+kLinkIO			.equ 0x041
+kMatrixEd		.equ 0x042
+kStatEd			.equ 0x043
+kGraph			.equ 0x044
+kMode			.equ 0x045
+kPrgmEd			.equ 0x046 ;PROGRAM EDIT
+kPrgmCr			.equ 0x047 ;PROGRAM CREATE
+kWindow			.equ 0x048 ;RANGE EDITOR
+kYequ			.equ 0x049 ;EQUATION EDITOR
+kTable			.equ 0x04A ;TABLE EDITOR
+kTblSet			.equ 0x04B ;TABLE SET
+kChkRAM			.equ 0x04C ;CHECK RAM
+kDelMem			.equ 0x04D ;DELETE MEM
+kResetMem		.equ 0x04E ;RESET MEM
+kResetDef		.equ 0x04F ;RESET DEFAULT
+kPrgmInput		.equ 0x050 ;PROGRAM INPUT
+kZFactEd		.equ 0x051 ;ZOOM FACTOR EDITOR
+kError			.equ 0x052 ;ERROR
+kSolveTVM		.equ 0x053 ;TVM SOLVER
+kSolveRoot		.equ 0x054 ;SOLVE EDITOR
+kStatP			.equ 0x055 ;stat plot
+kInfStat		.equ 0x056 ;Inferential Statistic
+kFormat			.equ 0x057 ;FORMAT
+kExtApps		.equ 0x058 ;External Applications.     NEW
+kNewApps		.equ 0x059 ;New Apps for Cerberus.
+append			.equ kNewApps
+echoStart1		.equ 0x05A
+kTrace			.equ 0x05A
+kZFit			.equ 0x05B
+kZIn			.equ 0x05C
+kZOut			.equ 0x05D
+kZPrev			.equ 0x05E
+kBox			.equ 0x05F
+kDecml			.equ 0x060
+kSetZm			.equ 0x061
+kSquar			.equ 0x062
+kStd			.equ 0x063
+kTrig			.equ 0x064
+kUsrZm			.equ 0x065
+kZSto			.equ 0x066
+kZInt			.equ 0x067
+kZStat			.equ 0x068
+echoStart2		.equ 0x069
+kSelect			.equ 0x069
+kCircl			.equ 0x06A
+kClDrw			.equ 0x06B
+kLine			.equ 0x06C
+kPen			.equ 0x06D
+kPtChg			.equ 0x06E
+kPtOff			.equ 0x06F
+kPtOn			.equ 0x070
+kVert			.equ 0x071
+kHoriz			.equ 0x072
+kText			.equ 0x073
+kTanLn			.equ 0x074
+kEval			.equ 0x075
+kInters			.equ 0x076
+kDYDX			.equ 0x077
+kFnIntg			.equ 0x078
+kRootG			.equ 0x079
+kDYDT			.equ 0x07A
+kDXDT			.equ 0x07B
+kDRDo			.equ 0x07C
+KGFMin			.equ 0x07D
+KGFMax			.equ 0x07E
+EchoStart		.equ 0x07F
+kListName		.equ 0x07F
+kAdd			.equ 0x080
+kSub			.equ 0x081
+kMul			.equ 0x082
+kDiv			.equ 0x083
+kExpon			.equ 0x084
+kLParen			.equ 0x085
+kRParen			.equ 0x086
+kLBrack			.equ 0x087
+kRBrack			.equ 0x088
+kShade			.equ 0x089
+kStore			.equ 0x08A
+kComma			.equ 0x08B
+kChs			.equ 0x08C
+kDecPnt			.equ 0x08D
+k0			.equ 0x08E
+k1			.equ 0x08F
+k2			.equ 0x090
+k3			.equ 0x091
+k4			.equ 0x092
+k5			.equ 0x093
+k6			.equ 0x094
+k7			.equ 0x095
+k8			.equ 0x096
+k9			.equ 0x097
+kEE			.equ 0x098
+kSpace			.equ 0x099
+kCapA			.equ 0x09A
+kCapB			.equ 0x09B
+kCapC			.equ 0x09C
+kCapD			.equ 0x09D
+kCapE			.equ 0x09E
+kCapF			.equ 0x09F
+kCapG			.equ 0x0A0
+kCapH			.equ 0x0A1
+kCapI			.equ 0x0A2
+kCapJ			.equ 0x0A3
+kCapK			.equ 0x0A4
+kCapL			.equ 0x0A5
+kCapM			.equ 0x0A6
+kCapN			.equ 0x0A7
+kCapO			.equ 0x0A8
+kCapP			.equ 0x0A9
+kCapQ			.equ 0x0AA
+kCapR			.equ 0x0AB
+kCapS			.equ 0x0AC
+kCapT			.equ 0x0AD
+kCapU			.equ 0x0AE
+kCapV			.equ 0x0AF
+kCapW			.equ 0x0B0
+kCapX			.equ 0x0B1
+kCapY			.equ 0x0B2
+kCapZ			.equ 0x0B3
+kVarx			.equ 0x0B4
+kPi			.equ 0x0B5
+kInv			.equ 0x0B6
+kSin			.equ 0x0B7
+kASin			.equ 0x0B8
+kCos			.equ 0x0B9
+kACos			.equ 0x0BA
+kTan			.equ 0x0BB
+kATan			.equ 0x0BC
+kSquare			.equ 0x0BD
+kSqrt			.equ 0x0BE
+kLn			.equ 0x0BF
+kExp			.equ 0x0C0
+kLog			.equ 0x0C1
+kALog			.equ 0x0C2
+kToABC			.equ 0x0C3
+kClrTbl			.equ 0x0C4
+kAns			.equ 0x0C5
+kColon			.equ 0x0C6
+kNDeriv			.equ 0x0C7
+kFnInt			.equ 0x0C8
+kRoot			.equ 0x0C9
+kQuest			.equ 0x0CA
+kQuote			.equ 0x0CB
+kTheta			.equ 0x0CC
+kIf			.equ 0x0CD
+kThen			.equ 0x0CE
+kElse			.equ 0x0CF
+kFor			.equ 0x0D0
+kWhile			.equ 0x0D1
+kRepeat			.equ 0x0D2
+kEnd			.equ 0x0D3
+kPause			.equ 0x0D4
+kLbl			.equ 0x0D5
+kGoto			.equ 0x0D6
+kISG			.equ 0x0D7
+kDSL			.equ 0x0D8
+kMenu			.equ 0x0D9
+kExec			.equ 0x0DA
+kReturn			.equ 0x0DB
+kStop			.equ 0x0DC
+kInput			.equ 0x0DD
+kPrompt			.equ 0x0DE
+kDisp			.equ 0x0DF
+kDispG			.equ 0x0E0
+kDispT			.equ 0x0E1
+kOutput			.equ 0x0E2
+kGetKey			.equ 0x0E3
+kClrHome		.equ 0x0E4
+kPrtScr			.equ 0x0E5
+kSinH			.equ 0x0E6
+kCosH			.equ 0x0E7
+kTanH			.equ 0x0E8
+kASinH			.equ 0x0E9
+kACosH			.equ 0x0EA
+kATanH			.equ 0x0EB
+kLBrace			.equ 0x0EC
+kRBrace			.equ 0x0ED
+kI			.equ 0x0EE
+kCONSTeA		.equ 0x0EF
+kPlot3			.equ 0x0F0
+kFMin			.equ 0x0F1
+kFMax			.equ 0x0F2
+kL1A			.equ 0x0F3
+kL2A			.equ 0x0F4
+kL3A			.equ 0x0F5
+kL4A			.equ 0x0F6
+kL5A			.equ 0x0F7
+kL6A			.equ 0x0F8
+kunA			.equ 0x0F9
+kvnA			.equ 0x0FA
+kwnA			.equ 0x0FB
+
 LGbelow			.equ 0x0EB ; = 3
 LGpath			.equ 0x0EC ; = 4
 LGanimate		.equ 0x0ED ; = 5
