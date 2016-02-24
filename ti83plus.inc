@@ -6,7 +6,7 @@
 ; This TI-83 Plus include file includes all known page 0x1B and page 0x1F ROM
 ;  calls as well as flag, keyboard, and character equates.
 ;-----------------------------------------------------------------------------
-; Modified 02/23/2016 by Scott Morton to be compatible with asz80
+; Modified 02/23/2016 by Scott Morton to be compatible with asz80,
 ;-----------------------------------------------------------------------------
 
 ;System Variable Equates

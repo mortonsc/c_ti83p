@@ -36,14 +36,6 @@
 
 .include "ti83plus.inc"
 
-.macro findsym
-        rst #0x10
-.endm
-
-.macro mov9toOP1
-        rst #0x20
-.endm
-
 	.area _CODE
 
 _CGrBufCpy::
@@ -174,51 +166,14 @@ _CDisable15MHz::
 
 _CGetAnsFP::
         bcall #_AnsName ; stores the name of Ans in OP1
-        findsym
+        rst rFINDSYM
         and #0x1f  ; FindSym stores the type in a, but bits 5-7 are garbage
         jr nz,AnsNotFP ; 0x00 is type code for real floating point
-        push de ; de stores the address, which is what we want
-        pop hl
+        ex de,hl ; de stores the address, which is what we want
         ret
 AnsNotFP:
         ld h,#0 ; return null if ans is not real fp
         ld l,#0
         ret
 
-;; finds a picture variable
-;; Inputs: a = picNo (1 for Pic1, etc)
-;; Outputs: same as _FindSym
-;; destroys: all
-FindPicH:
-        dec a ; Pic1 is 0x00, Pic2 is 0x01, etc.
-        ld (#PicName+2),a ; set which picture we want to load
-        ld hl,#PicName
-        mov9toOP1
-        findsym
-        ret
-PicName:
-        .db #PictObj,#tVarPict,#0,#0
-
-_CRecallPic::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
-        ld a,4(ix)
-        call FindPicH
-        jr c,PicNotFound
-        ld a,b
-        or a ; check if pic is in RAM (not archived)
-        jr z,PicInRam
-        bcall #_Arc_Unarc
-PicInRam:
-        ex de,hl    ; move address of pic to hl
-        inc hl
-        inc hl  ; first 2 bytes are the size of the image
-        jr CRecallPicRet
-PicNotFound:
-        ld h,#0
-        ld l,#0
-CRecallPicRet:
-        pop ix
-        ret
 
