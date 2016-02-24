@@ -156,7 +156,7 @@ _CDivFP::
         ld l,6(ix) ; load second argument
         ld h,7(ix)
         bcall _Mov9ToOP2
-        bcall _FPDiv
+        bcall _fpdiv
         ld e,8(ix) ; load return destination
         ld d,9(ix)
         call LoadFromOP1H
