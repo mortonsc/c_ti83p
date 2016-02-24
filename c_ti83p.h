@@ -158,6 +158,13 @@ typedef struct {
  * Otherwise returns NULL.
  */
 FloatingPoint *CGetAnsFP();
+FloatingPoint *CGetVarFP(char var_name);
+
+void CAddFP(FloatingPoint *add1, FloatingPoint *add2, FloatingPoint *sum);
+void CSubFP(FloatingPoint *sub1, FloatingPoint *sub2, FloatingPoint *diff);
+void CMultFP(FloatingPoint *fac1, FloatingPoint *fac2, FloatingPoint *prod);
+void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
+                                            FloatingPoint *quot);
 
 /*******GRAPHICS ROUTINES********/
 
