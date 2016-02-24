@@ -250,6 +250,25 @@ FloatingPoint *CGetAnsFP();
 
 /*******GRAPHICS ROUTINES********/
 
+/* picture variables don't record the bottom row of pixels */
+#define PIC_SIZE_BYTES (96*63)/8
+
+/*
+ * Returns a pointer to the picture variable picNo, if it exists.
+ * A picture is bitmap of PIC_SIZE bytes.
+ * pic0 on the calculator corresponds to picNo = 10.
+ * If the requested picture variable does not exist, returns NULL.
+ */
+unsigned char *CRecallPic(unsigned char picNo);
+
+/*
+ * Stores the data at pic in the picture variable picNo.
+ * A picture is bitmap of PIC_SIZE bytes.
+ * pic0 on the calculator corresponds to picNo = 10.
+ * If the picture var exists, it is overwritten; if it does not, it is created.
+ */
+void CStorePic(unsigned char picNo, unsigned char *pic);
+
 /*
  * Copies the contents of plotSScreen to the LCD.
  * Identical in behavior to GrBufCopy(), but faster.
