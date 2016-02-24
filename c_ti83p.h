@@ -224,10 +224,31 @@ void CDisableAPD();
 
 /*
  * Enable/disable running the CPU at 15MHz. (It defaults to 6MHz.)
- * The TI83+ is not capable of running at 15MHz, so these functions do nothing.
+ * Only has an effect on calculators newer than the TI-83+.
  */
 void CEnable15MHz();
 void CDisable15MHz();
+
+/*******FLOATING POINT OPERATIONS****/
+
+/*
+ * A floating point number, as represented by the calculator.
+ * Generally you will not want to touch the internals of the struct directly.
+ */
+typedef struct {
+    unsigned char sign;
+    unsigned char exponent;
+    unsigned char significand[7];
+} FloatingPoint;
+
+/*
+ * If a real floating point number is stored in the Ans variable,
+ * returns a pointer to it.
+ * Otherwise returns NULL.
+ */
+FloatingPoint *CGetAnsFP();
+
+/*******GRAPHICS ROUTINES********/
 
 /*
  * Copies the contents of plotSScreen to the LCD.

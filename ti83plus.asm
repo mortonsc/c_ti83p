@@ -28,6 +28,7 @@
 	.globl _CDisableAPD
 	.globl _CEnable15MHz
 	.globl _CDisable15MHz
+        .globl _CGetAnsFP
 
 	.area _DATA
 
@@ -160,4 +161,17 @@ _CDisable15MHz::
 	ld a,#0
 	out (#0x20),a
 	ret
+
+_CGetAnsFP::
+        bcall #_AnsName ; stores the name of Ans in OP1
+        bcall #_FindSym
+        and #0x1f  ; FindSym stores the type in a, but bits 5-7 are garbage
+        jr nz,AnsNotFP ; 0x00 is type code for real floating point
+        push de ; de stores the address, which is what we want
+        pop hl
+        ret
+AnsNotFP:
+        ld h,#0 ; return null if ans is not real fp
+        ld l,#0
+        ret
 
