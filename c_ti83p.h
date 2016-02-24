@@ -83,6 +83,8 @@ void CNewLine();
 void CPutC(char c);
 /* prints s in the large font */
 void CPutS(const char *s);
+/* prints i in the larget font */
+void CPutInt(int i);
 
 /* prints c in the small font */
 void CPutMap(char c);

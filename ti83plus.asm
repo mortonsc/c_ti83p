@@ -14,6 +14,7 @@
 	.globl _CNewLine
 	.globl _CPutC
 	.globl _CPutS
+        .globl _CPutInt
 	.globl _CPutMap
 	.globl _CVPutS
 	.globl _CGetKey
@@ -29,8 +30,6 @@
 	.globl _CEnable15MHz
 	.globl _CDisable15MHz
         .globl _CGetAnsFP
-        .globl _CRecallPic
-        .globl _CStorePic
 
 	.area _DATA
 
@@ -74,6 +73,16 @@ _CPutS::
 	pop	ix
 	ret
 
+_CPutInt:
+        push ix
+        ld ix,#0
+        add ix,sp
+
+        ld l,4(ix)
+        ld h,5(ix)
+        bcall #_DispHL
+        pop ix
+        ret
 
 _CPutMap::
 	push	ix
