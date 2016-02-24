@@ -12,7 +12,9 @@
 
         .area _DATA
 
+.nlist
 .include "ti83plus.inc"
+.list
 
         .area _CODE
 
