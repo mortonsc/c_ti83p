@@ -134,8 +134,8 @@ _InvOP1SC		.equ 0x408A
 _InvOP1S		.equ 0x408D
 _InvOP2S		.equ 0x4090
 _frac			.equ 0x4093
-_fprecip		.equ 0x4096
-_fpdiv			.equ 0x4099
+_FPRecip
+_FPDiv			.equ 0x4099
 _SqRoot			.equ 0x409C
 _RndGuard		.equ 0x409F
 _RnFx			.equ 0x40A2

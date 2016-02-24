@@ -158,11 +158,43 @@ typedef struct {
  * Otherwise returns NULL.
  */
 FloatingPoint *CGetAnsFP();
+
+/*
+ * If the variable with the given name exists, returns a pointer to it.
+ * Otherwise returns NULL.
+ * Valid variable names are capital letters 'A' - 'Z' and L_THETA.
+ */
 FloatingPoint *CGetVarFP(char var_name);
 
+/*
+ * Returns a pointer to the variable with the given name.
+ * If it does not exist, it is created.
+ * If it does exist, its value is not necessarily preserved.
+ */
+FloatingPoint *CMakeVarFP(char var_name);
+
+/*
+ * Adds the contents of add1 to add2 and stores the result in sum.
+ * Any or all the arguments may be identical.
+ */
 void CAddFP(FloatingPoint *add1, FloatingPoint *add2, FloatingPoint *sum);
+
+/*
+ * Subtracts the contents of sub2 from sub1 and stores the result in diff.
+ * Any of all the arguments may be identical.
+ */
 void CSubFP(FloatingPoint *sub1, FloatingPoint *sub2, FloatingPoint *diff);
+
+/*
+ * Multiplies the contents of fac1 by fac2 and stores the result in prod.
+ * Any or all the arguments may be identical.
+ */
 void CMultFP(FloatingPoint *fac1, FloatingPoint *fac2, FloatingPoint *prod);
+
+/*
+ * Divides the contents of dividend by divisor and stores the result in quot.
+ * Any or all of the arguments may be identical.
+ */
 void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
                                             FloatingPoint *quot);
 
@@ -175,7 +207,7 @@ void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
  * Returns a pointer to the picture variable picNo, if it exists.
  * A picture is bitmap of PIC_SIZE bytes.
  * pic0 on the calculator corresponds to picNo = 10.
- * If the ested picture variable does not exist, returns NULL.
+ * If the requested picture variable does not exist, returns NULL.
  */
 unsigned char *CRecallPic(unsigned char picNo);
 
