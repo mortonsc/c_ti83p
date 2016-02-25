@@ -59,6 +59,7 @@ LoadFromOP1H:
         ldir
         ret
 
+;; FloatingPoint *CGetAnsFP();
 _CGetVarFP::
         push ix
         ld ix,#0
@@ -75,6 +76,7 @@ GetVarFPRet:
         pop ix
         ret
 
+;; FloatingPoint *CMakeVarFP(char var_name);
 _CMakeVarFP::
         push ix
         ld ix,#0
@@ -95,6 +97,7 @@ VarExists:
 FloatingPoint0:
         .db 0,0x80,0,0,0,0,0,0,0
 
+;; void CAddFP(FloatingPoint *add1, FloatingPoint *add2, FloatingPoint *sum);
 _CAddFP::
         push ix
         ld ix,#0
@@ -112,6 +115,7 @@ _CAddFP::
         pop ix
         ret
 
+;; void CSubFP(FloatingPoint *sub1, FloatingPoint *sub2, FloatingPoint *diff);
 _CSubFP::
         push ix
         ld ix,#0
@@ -129,6 +133,7 @@ _CSubFP::
         pop ix
         ret
 
+;; void CMultFP(FloatingPoint *fac1, FloatingPoint *fac2, FloatingPoint *prod);
 _CMultFP::
         push ix
         ld ix,#0
@@ -146,6 +151,8 @@ _CMultFP::
         pop ix
         ret
 
+;; void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
+;;                                          FloatingPoint *quot);
 _CDivFP::
         push ix
         ld ix,#0

@@ -1,8 +1,24 @@
-;; These are some of the graphics routines used in the ION shell.
-;; The routines themselves were written by Joe Wingbermuehle.
-;; These are copied directly the source on wikiti.brandonw.net,
-;; modified only to make them compatible with sdasz80 syntax
-;; and to refer to the graph buffer using the name in ti83plus.inc.
+;; This file contains some of the graphics routines used in the ION shell.
+;;
+;; Copyright (C) 2016 Scott Morton
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;;
+;; The routines themselves were written by Joe Wingbermuehle,
+;; and were copied directly the source on wikiti.brandonw.net,
+;; modified in the week of 20 Feb 2016 only to make them compatible
+;; with sdasz80 and not require any ION includes.
 
 
 ;-----> Copy the gbuf to the screen (fast)
@@ -19,6 +35,7 @@
 
         .area CODE
 
+;; void FastCopy();
 _FastCopy::
         di
         ld a,#0x80
@@ -51,9 +68,10 @@ fastCopyLoop:
         jr nz,fastCopyAgain
         ret
 
-; wrapper for largeSprite; takes C arguments from the stack and stores in the
-; appropriate registers.
+;; void PutLargeSprite(unsigned char x, unsigned char y, LargeSprite *sprite);
 _PutLargeSprite::
+        ; wrapper for largeSprite; takes C arguments from the stack and stores
+        ; them in the appropriate registers.
         push ix
         ld ix,#0
         add ix,sp

@@ -48,19 +48,23 @@
 
 	.area _CODE
 
+;; void CGrBufCpy();
 _CGrBufCpy::
         bcall _GrBufCpy
 	ret
 
+;; void CClrLCDFull();
 _CClrLCDFull::
         bcall _ClrLCDFull
 	ret
 
 
+;; void CNewLine();
 _CNewLine::
 	bcall _newline
 	ret
 
+;; void CPutC(char c);
 _CPutC::
 	push	ix
 	ld	ix,#0
@@ -73,6 +77,7 @@ _CPutC::
 	ret
 
 
+;; void CPutS(const char *s);
 _CPutS::
 	push	ix
 	ld	ix,#0
@@ -84,6 +89,7 @@ _CPutS::
 	pop	ix
 	ret
 
+;; void CPutInt(int i);
 _CPutInt:
         push ix
         ld ix,#0
@@ -95,6 +101,7 @@ _CPutInt:
         pop ix
         ret
 
+;; void CPutMap(char c);
 _CPutMap::
 	push	ix
 	ld	ix,#0
@@ -106,6 +113,7 @@ _CPutMap::
 	ret
 
 
+;; void CVPutS(const char *s);
 _CVPutS::
 	push	ix
 	ld	ix,#0
@@ -119,58 +127,69 @@ _CVPutS::
 	ret
 
 
+;; unsigned char CGetKey();
 _CGetKey::
 	bcall _getkey
 	ld l,a
 	ret
 
 
+;; unsigned char CGetCSC();
 _CGetCSC::
         bcall _GetCSC
 	ld l,a
 	ret
 
 
+;; void CTextInvertOn();
 _CTextInvertOn::
 	set textInverse,textFlags(iy)
 	ret
 
 
+;; void CTextInvertOff();
 _CTextInvertOff::
 	res textInverse,textFlags(iy)
 	ret
 
 
+;; void CLowerCaseOn();
 _CLowerCaseOn::
 	set lwrCaseActive,appLwrCaseFlag(iy)
 	ret
 
 
+;; void CLowerCaseOff();
 _CLowerCaseOff::
 	res lwrCaseActive,appLwrCaseFlag(iy)
 	ret
 
 
+;; void CRunIndicatorOn();
 _CRunIndicatorOn::
 	bcall _RunIndicOn
 	ret
 
 
+;; void CRunIndicatorOff();
 _CRunIndicatorOff::
 	bcall _RunIndicOff
 	ret
 
 
+;; void CEnableAPD();
 _CEnableAPD::
         bcall _EnableApd
 	ret
 
 
+;; void CDisableAPD();
 _CDisableAPD::
 	bcall _DisableApd
 	ret
 
 
+;; void CEnable15MHz();
 _CEnable15MHz::
 	in a,(2)
 	and #0x80
@@ -179,6 +198,7 @@ _CEnable15MHz::
 	out (0x20),a ; port 20 controls CPU speed
 	ret
 
+;; void CDisable15MHz();
 _CDisable15MHz::
 	ld a,#0
 	out (0x20),a

@@ -46,6 +46,7 @@ FindAppVarH:
         bcall _ChkFindSym
         ret
 
+;; void *CRecallAppVar(const char *name, int *size);
 _CRecallAppVar::
         push ix
         ld ix,#0
@@ -72,6 +73,7 @@ AppVarNotFound:
         pop ix
         ret
 
+;; void *CCreateAppVar(const char *name, int size);
 _CCreateAppVar::
         push ix
         ld ix,#0
@@ -93,6 +95,7 @@ MakeNewVar:
         pop ix
         ret
 
+;; void CArchiveAppVar(const char *name);
 _CArchiveAppVar::
         push ix
         ld ix,#0
@@ -109,6 +112,7 @@ ArchiveAppVarRet:
         pop ix
         ret
 
+;; void CDeleteAppVar(const char *name);
 _CDeleteAppVar::
         push ix
         ld ix,#0

@@ -94,6 +94,7 @@ void CGrBufCpy();
 /* clears the LCD */
 void CClrLCDFull();
 
+/* Moves text position to the next line of the screen */
 void CNewLine();
 
 /* prints c in the large font */
@@ -211,6 +212,7 @@ void CMultFP(FloatingPoint *fac1, FloatingPoint *fac2, FloatingPoint *prod);
 /*
  * Divides the contents of dividend by divisor and stores the result in quot.
  * Any or all of the arguments may be identical.
+ * The divisor must not be 0.
  */
 void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
                                             FloatingPoint *quot);

@@ -43,6 +43,7 @@ FindPicH:
 PicName:
         .db PictObj,tVarPict,0,0
 
+;; unsigned char *CRecallPic(unsigned char picNo);
 _CRecallPic::
 	push	ix
 	ld	ix,#0
@@ -66,6 +67,7 @@ CRecallPicRet:
         pop ix
         ret
 
+;; void CStorePic(unsigned char picNo, unsigned char *pic);
 _CStorePic::
         push ix
         ld ix,#0
