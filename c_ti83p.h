@@ -230,6 +230,7 @@ typedef struct {
 
 /*
  * Returns a pointer to the picture variable picNo, if it exists.
+ * If it is archived, unarchives it.
  * A picture is bitmap of PIC_SIZE bytes.
  * pic0 on the calculator corresponds to picNo = 10.
  * If the requested picture variable does not exist, returns NULL.
@@ -237,12 +238,27 @@ typedef struct {
 unsigned char *CRecallPic(unsigned char picNo);
 
 /*
- * Stores the data at pic in the picture variable picNo.
- * A picture is bitmap of PIC_SIZE bytes.
- * pic0 on the calculator corresponds to picNo = 10.
- * If the picture var exists, it is overwritten; if it does not, it is created.
+ * Creates the given Picture variable and returns a pointer to it.
+ * If the picture var already exists, it is overwritten, even if
+ * it is archived; if it does not, it is created.
+ * The contents of the newly created picture are undefined.
  */
-void CStorePic(unsigned char picNo, unsigned char *pic);
+unsigned char *CCreatePic(unsigned char picNo);
+
+/*
+ * If Picture variable picNo exists and is not archived, archives it.
+ * Otherwise has no effect.
+ * Renders any pointers to this Pic invalid.
+ */
+void CArchivePic(unsigned char picNo);
+
+/*
+ * If Picture variable picNo exists, deletes it, even if it is archived.
+ * Otherwise has no effect.
+ * Any previously obtained pointers to this pic are rendered invalid,
+ * and remain so even if it is subsequently recreated.
+ */
+void CDeletePic(unsigned char picNo);
 
 /*
  * Copies the contents of plotSScreen to the LCD.
@@ -251,6 +267,7 @@ void CStorePic(unsigned char picNo, unsigned char *pic);
 void FastCopy();
 
 /*
+ * CURRENTLY DOES NOT WORK
  * Copies sprite to plotSScreen with the upper-left corner at position x,y.
  * Requires that there is enough space in the buffer to fit the whole sprite;
  * that is, this function does not "clip" sprites.
@@ -268,14 +285,14 @@ void PutLargeSprite(unsigned char x, unsigned char y, LargeSprite *sprite);
 void *CRecallAppVar(const char *name, int *size);
 
 /*
- * Creates a new AppVar with the given name and size,
- * and returns a pointer to its first byte of data.
- * If an AppVar with the same name exists, it is deleted,
- * including if it is archived.
+ * Creates a new AppVar with the given name and size, and returns a pointer
+ * to its first byte of data. If an AppVar with the same name already exists,
+ * it is deleted, including if it is archived.
+ * The contents of the newly created AppVar are undefined.
  *
  * Any pointers that previously pointed to an AppVar of this name
  * (obtained by RecallAppVar(), for example) are no longer valid
- * after call this function.
+ * after a call to this function.
  */
 void *CCreateAppVar(const char *name, int size);
 
@@ -287,8 +304,8 @@ void CArchiveAppVar(const char *name);
 
 /*
  * If an AppVar with the given name exists, deletes it, even if it is archived.
- * Any pointers to this AppVar become invalid, and remain so even if it is
- * subsequently recreated.
+ * Any pointers to an AppVar of this name become invalid, and remain so even
+ * if it is subsequently recreated.
  */
 void CDeleteAppVar(const char *name);
 

@@ -19,7 +19,9 @@
         .optsdcc -mz80
 
         .globl _CRecallPic
-        .globl _CStorePic
+        .globl _CCreatePic
+        .globl _CArchivePic
+        .globl _CDeletePic
 
         .area _DATA
 
@@ -41,7 +43,7 @@ FindPicH:
         rst rFINDSYM
         ret
 PicName:
-        .db PictObj,tVarPict,0,0
+        .db PictObj,tVarPict,0,0 ; pic number goes in 3rd byte
 
 ;; unsigned char *CRecallPic(unsigned char picNo);
 _CRecallPic::
@@ -54,7 +56,12 @@ _CRecallPic::
         ld a,b
         or a ; check if pic is in RAM (not archived)
         jr z,PicInRam
+        push ix ; ArcUnarc destorys all regs, including OP1
+        bcall _PushRealO1
         bcall _Arc_Unarc
+        bcall _PopRealO1
+        pop ix
+        rst rFINDSYM ; find the unarchived pic again using the name in OP1
 PicInRam:
         ex de,hl    ; move address of pic to hl
         inc hl
@@ -67,8 +74,8 @@ CRecallPicRet:
         pop ix
         ret
 
-;; void CStorePic(unsigned char picNo, unsigned char *pic);
-_CStorePic::
+;; unsigned char *CCreatePic(unsigned char picNo);
+_CCreatePic::
         push ix
         ld ix,#0
         add ix,sp
@@ -76,23 +83,47 @@ _CStorePic::
         ld a,4(ix)
         call FindPicH
         jr c,CreatePic
+        push ix
         bcall _DelVarArc ; delete the var if it exists
+        pop ix
 CreatePic:
-        bcall _CreatePict ; stores address in de
+        bcall _CreatePict ; name is still stored in OP1
+        ex de,hl
         ld a,#0xF4 ; store size of image in first 2 bytes
-                   ; and in bc, which is the counter for copying
-        ld (de),a
-        ld c,a
-        inc de
+        ld (hl),a
+        inc hl
         ld a,#0x02
-        ld (de),a
-        ld b,a
-        inc de
+        ld (hl),a
+        inc hl
+        pop ix
+        ret
 
-        ld l,5(ix)
-        ld h,6(ix)
-        ldir  ; copy data from argument pointer to the new image
+;; void CArchivePic(unsigned char picNo);
+_CArchivePic::
+        push ix
+        ld ix,#0
+        add ix,sp
+        ld a,4(ix)
+        call FindPicH
+        jr c,ArchivePicRet ; pic doesn't exist
+        ld a,b
+        or a
+        jr nz,ArchivePicRet ; pic already archived
+        bcall _Arc_Unarc
+ArchivePicRet:
+        pop ix
+        ret
 
+;; void CDeletePic(unsigned char picNo)
+_CDeletePic::
+        push ix
+        ld ix,#0
+        add ix,sp
+        ld a,4(ix)
+        call FindPicH
+        jr c,DeletePicRet ; pic doesn't exist
+        bcall _DelVarArc
+DeletePicRet:
         pop ix
         ret
 
