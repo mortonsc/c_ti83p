@@ -1,20 +1,37 @@
-#ifndef _TI_84_PLUS_INC_H_
-#define _TI_84_PLUS_INC_H_ 1
-
-/*
- * Copyright (c) 2016 Scott Morton
- * This is free software released under the MIT license.
- * For more information, see the LICENSE.txt file
- * which should be bundled with this source.
- */
-
 /*
  * This is a collection of C wrappers for useful assembly routines
  * for TI-83+ series graphing calculators.
  *
- * All function names are prefixed with "C", so that the implementation can
+ * Most function names are prefixed with "C", so that the implementation can
  * distinguish between them and ROM calls that might have an identical name.
+ *
+ * This header file contains declarations for all functions included
+ * in the library, along with #defines for special characters, keycodes,
+ * and calculator tokens. It also contains variables that let you access
+ * certain useful locations in RAM.
+ *
+ * In order to use the functions in this header, you require the compiled
+ * c_ti83p.lib file. This header should have come bundled either with it
+ * or with the source files necessary to compile it.
+ *
+ * Copyright (C) 2016 Scott Morton
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#ifndef _TI_84_PLUS_INC_H_
+#define _TI_84_PLUS_INC_H_ 1
 
 /*
  * These two variables specify the location where large text will be displayed.

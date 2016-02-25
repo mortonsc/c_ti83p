@@ -1,6 +1,6 @@
 # c_ti83p
 A library for programming C projects for TI-83+ series calculators using SDCC.
-This library is under active development and is subject to change.
+This library is under active development and everything is  subject to change without warning.
 
 ## Compilation
 The source code for c_ti83p is hosted on [Github](https://github.com/mortonsc/c_ti83p).
@@ -41,9 +41,11 @@ All the other functions and data included with c_ti83p are listed in the `c_ti83
 * [Ion Fastcopy](http://wikiti.brandonw.net/index.php?title=Z80_Routines:Graphic:Fastcopy)
 
 ## License
-All code that I wrote is copyright (c) Scott Morton 2016. See the [license](LICENSE.txt) for details.
-All other code is copyright (c) its original owner. Writers of code are named when they could be identified.
-This library is free software.
+This library is free software, licensed under the GNU GPLv3.0.
+See the [license](LICENSE.txt) for details.
+All code that I wrote is copyright (C) Scott Morton 2016.
+All other content is copyright (C) its original owner.
+Original authors of code are named when they could be identified.
 
 ## Contact
 I can be contacted through email; my address is visible on my Github profile.
