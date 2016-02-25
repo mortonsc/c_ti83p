@@ -1,5 +1,6 @@
-;; This file contains functions for accessing the calculator's
-;; picture variables.
+;; This file implements functions for creating and modifying picture variables.
+;;
+;; Copyright (C) 2016 Scott Morton
 ;;
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -40,7 +41,7 @@ FindPicH:
         rst rFINDSYM
         ret
 PicName:
-        .db #PictObj,#tVarPict,#0,#0
+        .db PictObj,tVarPict,0,0
 
 _CRecallPic::
 	push	ix
@@ -52,7 +53,7 @@ _CRecallPic::
         ld a,b
         or a ; check if pic is in RAM (not archived)
         jr z,PicInRam
-        bcall #_Arc_Unarc
+        bcall _Arc_Unarc
 PicInRam:
         ex de,hl    ; move address of pic to hl
         inc hl
@@ -73,9 +74,9 @@ _CStorePic::
         ld a,4(ix)
         call FindPicH
         jr c,CreatePic
-        bcall #_DelVarArc ; delete the var if it exists
+        bcall _DelVarArc ; delete the var if it exists
 CreatePic:
-        bcall #_CreatePict ; stores address in de
+        bcall _CreatePict ; stores address in de
         ld a,#0xF4 ; store size of image in first 2 bytes
                    ; and in bc, which is the counter for copying
         ld (de),a

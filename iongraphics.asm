@@ -59,7 +59,7 @@ _PutLargeSprite::
         add ix,sp
 
         ld a,4(ix)
-        ld b,5(ix)
+        ld d,5(ix) ; this argument will go in l later
         ld l,6(ix)
         ld h,7(ix)
         ld b,(hl) ; first element of struct is height
@@ -69,6 +69,7 @@ _PutLargeSprite::
 
         push hl ; largeSprite takes the address in ix
         pop ix ; ok because we don't need the value of ix after this
+        ld l,d
         call largeSpriteH
 
         pop ix
@@ -91,7 +92,7 @@ largeSpriteH:
         ex   af,af'
 
         ld   e,l
-        ld   h,#0x00
+        ld   h,#0
         ld   d,h
         add   hl,de
         add   hl,de

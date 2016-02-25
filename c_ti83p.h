@@ -255,6 +255,41 @@ void FastCopy();
  */
 void PutLargeSprite(unsigned char x, unsigned char y, LargeSprite *sprite);
 
+/********AppVar Routines********/
+
+/*
+ * If an AppVar with the given name exists, returns a pointer to its
+ * first byte of data and stores its size (in bytes) in *size.
+ * Otherwise returns null.
+ * If the AppVar exists but is archived, it is unarchived.
+ */
+void *CRecallAppVar(const char *name, int *size);
+
+/*
+ * Creates a new AppVar with the given name and size,
+ * and returns a pointer to its first byte of data.
+ * If an AppVar with the same name exists, it is deleted,
+ * including if it is archived.
+ *
+ * Any pointers that previously pointed to an AppVar of this name
+ * (obtained by RecallAppVar(), for example) are no longer valid
+ * after call this function.
+ */
+void *CCreateAppVar(const char *name, int size);
+
+/*
+ * If an AppVar with the given name exists and is not archived,
+ * archives it. Otherwise does nothing.
+ */
+void CArchiveAppVar(const char *name);
+
+/*
+ * If an AppVar with the given name exists, deletes it, even if it is archived.
+ * Any pointers to this AppVar become invalid, and remain so even if it is
+ * subsequently recreated.
+ */
+void CDeleteAppVar(const char *name);
+
 
 /* Everything from here on out is contants taken from ti83plus.inc */
 
