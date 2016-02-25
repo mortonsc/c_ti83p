@@ -16,7 +16,7 @@ Then execute the following:
 ### Windows
 SDCC is available on Windows, so it is possible to compile c_ti83p, but there is currently no official compile script.
 
-## Compiling with SDCC and c_ti83-
+## Compiling with SDCC and c_ti83p
 In order for a program to use c_ti83p, it must `#include c_ti83p.h`, and be linked against `tios_crt0.rel`
 and `c_ti83p.lib`. `tios_crt0.rel` *must* be listed first.
 For example, if you wanted to compile a program containing one source file, `main.c`, 
