@@ -1,6 +1,6 @@
 ASM=sdasz80
 AFLAGS=-p -g -o
-RELS = ti83plus.rel picvars.rel floatingpoint.rel fastcopy.rel
+RELS = ti83plus.rel picvars.rel floatingpoint.rel iongraphics.rel
 LIB=c_ti83p.lib
 
 .PHONY: all clean

@@ -220,6 +220,12 @@ void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
 /* picture variables don't record the bottom row of pixels */
 #define PIC_SIZE_BYTES (96*63)/8
 
+typedef struct {
+    unsigned char height; /* in pixels */
+    unsigned char width; /* in bytes, so width of 2 corresponds to 16 pixels*/
+    unsigned char *contents; /* pointer to array of length height*width */
+} LargeSprite;
+
 /*
  * Returns a pointer to the picture variable picNo, if it exists.
  * A picture is bitmap of PIC_SIZE bytes.
@@ -241,6 +247,13 @@ void CStorePic(unsigned char picNo, unsigned char *pic);
  * Identical in behavior to GrBufCopy(), but faster.
  */
 void FastCopy();
+
+/*
+ * Copies sprite to plotSScreen with the upper-left corner at position x,y.
+ * Requires that there is enough space in the buffer to fit the whole sprite;
+ * that is, this function does not "clip" sprites.
+ */
+void PutLargeSprite(unsigned char x, unsigned char y, LargeSprite *sprite);
 
 
 /* Everything from here on out is contants taken from ti83plus.inc */
