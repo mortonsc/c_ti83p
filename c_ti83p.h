@@ -106,16 +106,16 @@ void CClrLCDFull();
 void CNewLine();
 
 /* prints c in the large font */
-void CPutC(char c);
+void CPutC(uint8_t c);
 /* prints s in the large font */
-void CPutS(const char *s);
-/* prints i in the larget font */
-void CPutInt(int i);
+void CPutS(const uint8_t *s);
+/* prints i in the large font */
+void CPutInt(uint16_t i);
 
 /* prints c in the small font */
-void CPutMap(char c);
+void CPutMap(uint8_t c);
 /* prints s in the small font */
-void CVPutS(const char *s);
+void CVPutS(const uint8_t *s);
 
 /* waits for the user to press a key, then returns the keycode */
 uint8_t CGetKey();
@@ -190,14 +190,14 @@ FloatingPoint *CGetAnsFP();
  * Otherwise returns NULL.
  * Valid variable names are capital letters 'A' - 'Z' and L_THETA.
  */
-FloatingPoint *CGetVarFP(char var_name);
+FloatingPoint *CGetVarFP(uint8_t var_name);
 
 /*
  * Returns a pointer to the variable with the given name.
  * If it does not exist, it is created.
  * If it does exist, its value is not necessarily preserved.
  */
-FloatingPoint *CMakeVarFP(char var_name);
+FloatingPoint *CMakeVarFP(uint8_t var_name);
 
 /*
  * Adds the contents of add1 to add2 and stores the result in sum.
@@ -224,6 +224,11 @@ void CMultFP(FloatingPoint *fac1, FloatingPoint *fac2, FloatingPoint *prod);
  */
 void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
                                             FloatingPoint *quot);
+/*
+ * Converts fp to an integer. If the exponent of fp is greater than 3,
+ * returns INT16_MAX.
+ */
+int16_t CFPToInt(FloatingPoint *fp);
 
 /*******GRAPHICS ROUTINES********/
 
@@ -290,7 +295,7 @@ void PutLargeSprite(uint8_t x, uint8_t y, LargeSprite *sprite);
  * Otherwise returns null.
  * If the AppVar exists but is archived, it is unarchived.
  */
-void *CRecallAppVar(const char *name, int *size);
+void *CRecallAppVar(const uint8_t *name, uint16_t *size);
 
 /*
  * Creates a new AppVar with the given name and size, and returns a pointer
@@ -302,13 +307,13 @@ void *CRecallAppVar(const char *name, int *size);
  * (obtained by RecallAppVar(), for example) are no longer valid
  * after a call to this function.
  */
-void *CCreateAppVar(const char *name, int size);
+void *CCreateAppVar(const uint8_t *name, uint16_t size);
 
 /*
  * If an AppVar with the given name exists and is not archived,
  * archives it. Otherwise does nothing.
  */
-void CArchiveAppVar(const char *name);
+void CArchiveAppVar(const uint8_t *name);
 
 /*
  * If an AppVar with the given name exists, deletes it, even if it is archived.

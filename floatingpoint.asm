@@ -187,3 +187,24 @@ _CDivFP::
         pop ix
         ret
 
+;; int16_t CFPToInt(FloatingPoint *fp);
+_CFPToInt::
+        push ix
+        ld ix,#0
+        add ix,sp
+        ld l,4(ix)
+        ld h,5(ix)
+        rst rMOV9TOOP1
+        ld a,(OP1+1) ; check exponent; ConvOP1 will error if it's >3
+        cp a,#0x84  ; 0x84 <==> x 10^4
+        jr nc, FPToIntOverflow
+        bcall _ConvOP1
+        ex de,hl
+        jr FPToIntRet
+FPToIntOverflow:
+        ld l,#0xFF ; FP too big, return max positive int value
+        ld h,#0x7F
+FPToIntRet:
+        pop ix
+        ret
+
