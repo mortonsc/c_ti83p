@@ -323,13 +323,41 @@ void CArchiveAppVar(const uint8_t *name);
 void CDeleteAppVar(const char *name);
 
 /*******Program Variables********/
+
+
+/*
+ * If a program with the given name exists, returns a pointer to its contents
+ * and stores its size in size. Otherwise returns NULL.
+ * If the program is archived, unarchives it.
+ */
 uint8_t *CRecallPrgm(const uint8_t *name, uint16_t *size);
 
+/*
+ * Creates a new program of the given name and size, and returns a pointer
+ * to its contents. If a program already exists with the same name, it is
+ * deleted, even if it is archived.
+ * This function should be used if you intend to create a TI-Basic program
+ * editable by the user; if you want to create an assembly/machine code
+ * program, use CCreateProtPrgm to prevent the user from editing it.
+ */
 uint8_t *CCreatePrgm(const uint8_t *name, uint16_t size);
+
+/*
+ * Same as CCreatePrgm, except the created program cannot be modified by the
+ * user. Always use this for programs containing machine code.
+ */
 uint8_t *CCreateProtPrgm(const uint8_t *name, uint16_t size);
 
+/*
+ * If a program with the given name exists, archives it.
+ * Otherwise does nothing.
+ */
 void CArchivePrgm(const uint8_t *name);
 
+/*
+ * If a program with the given name exists, deletes it, even if it is archived.
+ * Otherwise has no effect.
+ */
 void CDeletePrgm(const uint8_t *name);
 
 
