@@ -47,7 +47,7 @@ _FastCopy::
         ld a,#0x80
         out (0x10),a
 
-        ld hl, #_plotSScreen-12-(-(12*64)+1)
+        ld hl, #plotSScreen-12-(-(12*64)+1)
 
         ld a,#0x20
         ld c,a
@@ -129,7 +129,7 @@ largeSpriteH:
         srl   e
         srl   e
         add   hl,de
-        ld   de, #_plotSScreen
+        ld   de, #plotSScreen
         add   hl,de
 largeSpriteLoop1:
         push   hl
