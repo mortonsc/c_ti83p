@@ -39,12 +39,14 @@
 #ifndef _TI_84_PLUS_INC_H_
 #define _TI_84_PLUS_INC_H_ 1
 
+#include <stdint.h>
+
 /*
  * These two variables specify the location where large text will be displayed.
  * Calling PutC or PutS will change their values.
  */
-__at 0x844C unsigned char curCol;
-__at 0x844B unsigned char curRow;
+__at 0x844C uint8_t curCol;
+__at 0x844B uint8_t curRow;
 
 /*
  * These two variables specify the location where small text will be displayed.
@@ -52,8 +54,8 @@ __at 0x844B unsigned char curRow;
  * Note that their values are measured in pixels, so if you want to go to
  * a new row of text, incrementing penRow will not be sufficient.
  */
-__at 0x86D7 unsigned char penCol;
-__at 0x86D8 unsigned char penRow;
+__at 0x86D7 uint8_t penCol;
+__at 0x86D8 uint8_t penRow;
 
 /*
  * number of bytes in a buffer
@@ -75,19 +77,19 @@ __at 0x86D8 unsigned char penRow;
  * plotSScreen is useful as a buffer to modify the screen,
  * so that it can be updated all at once.
  */
-__at 0x9340 unsigned char plotSScreen[BUFFER_SIZE];
+__at 0x9340 uint8_t plotSScreen[BUFFER_SIZE];
 
 /*
  * This block of RAM is unused by the calculator, so it's useful as backup
  * memory, or to store another version of the screen.
  */
-__at 0x9872 unsigned char appBackUpScreen[BUFFER_SIZE];
+__at 0x9872 uint8_t appBackUpScreen[BUFFER_SIZE];
 
 /*
  * This block of RAM is only used by the calculator is automatic power down
  * is on. If you disable APD it can be used for more additional memory.
  */
-__at 0x86EC unsigned char saveSScreen[BUFFER_SIZE];
+__at 0x86EC uint8_t saveSScreen[BUFFER_SIZE];
 
 /*
  * Updates the LCD to reflect the contents of plotSScreen.
@@ -116,13 +118,13 @@ void CPutMap(char c);
 void CVPutS(const char *s);
 
 /* waits for the user to press a key, then returns the keycode */
-unsigned char CGetKey();
+uint8_t CGetKey();
 
 /*
  * if the user is currently pressing a key, returns its keycode
  * note that this function uses different codes than GetKey()
  */
-unsigned char CGetCSC();
+uint8_t CGetCSC();
 
 /*
  * Any text printed after TextInvertOn is called will appear inverted
@@ -171,9 +173,9 @@ void CDisable15MHz();
  * Generally you will not want to touch the internals of the struct directly.
  */
 typedef struct {
-    unsigned char sign;
-    unsigned char exponent;
-    unsigned char significand[7];
+    uint8_t sign;
+    uint8_t exponent;
+    uint8_t significand[7];
 } FloatingPoint;
 
 /*
@@ -229,9 +231,9 @@ void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
 #define PIC_SIZE_BYTES (96*63)/8
 
 typedef struct {
-    unsigned char height; /* in pixels */
-    unsigned char width; /* in bytes, so width of 2 corresponds to 16 pixels*/
-    unsigned char *contents; /* pointer to array of length height*width */
+    uint8_t height; /* in pixels */
+    uint8_t width; /* in bytes, so width of 2 corresponds to 16 pixels*/
+    uint8_t *contents; /* pointer to array of length height*width */
 } LargeSprite;
 
 /*
@@ -241,7 +243,7 @@ typedef struct {
  * pic0 on the calculator corresponds to picNo = 10.
  * If the requested picture variable does not exist, returns NULL.
  */
-unsigned char *CRecallPic(unsigned char picNo);
+uint8_t *CRecallPic(uint8_t picNo);
 
 /*
  * Creates the given Picture variable and returns a pointer to it.
@@ -249,14 +251,14 @@ unsigned char *CRecallPic(unsigned char picNo);
  * it is archived; if it does not, it is created.
  * The contents of the newly created picture are undefined.
  */
-unsigned char *CCreatePic(unsigned char picNo);
+uint8_t *CCreatePic(uint8_t picNo);
 
 /*
  * If Picture variable picNo exists and is not archived, archives it.
  * Otherwise has no effect.
  * Renders any pointers to this Pic invalid.
  */
-void CArchivePic(unsigned char picNo);
+void CArchivePic(uint8_t picNo);
 
 /*
  * If Picture variable picNo exists, deletes it, even if it is archived.
@@ -264,7 +266,7 @@ void CArchivePic(unsigned char picNo);
  * Any previously obtained pointers to this pic are rendered invalid,
  * and remain so even if it is subsequently recreated.
  */
-void CDeletePic(unsigned char picNo);
+void CDeletePic(uint8_t picNo);
 
 /*
  * Copies the contents of plotSScreen to the LCD.
@@ -278,7 +280,7 @@ void FastCopy();
  * Requires that there is enough space in the buffer to fit the whole sprite;
  * that is, this function does not "clip" sprites.
  */
-void PutLargeSprite(unsigned char x, unsigned char y, LargeSprite *sprite);
+void PutLargeSprite(uint8_t x, uint8_t y, LargeSprite *sprite);
 
 /********AppVar Routines********/
 
