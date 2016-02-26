@@ -322,6 +322,16 @@ void CArchiveAppVar(const uint8_t *name);
  */
 void CDeleteAppVar(const char *name);
 
+/*******Program Variables********/
+uint8_t *CRecallPrgm(const uint8_t *name, uint16_t *size);
+
+uint8_t *CCreatePrgm(const uint8_t *name, uint16_t size);
+uint8_t *CCreateProtPrgm(const uint8_t *name, uint16_t size);
+
+void CArchivePrgm(const uint8_t *name);
+
+void CDeletePrgm(const uint8_t *name);
+
 
 /* Everything from here on out is contants taken from ti83plus.inc */
 
