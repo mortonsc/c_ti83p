@@ -1,6 +1,6 @@
 # c_ti83p
 A library for programming C projects for TI-83+ series calculators using SDCC.
-This library is under active development and everything is  subject to change without warning.
+This library is under active development and everything is subject to change without warning.
 
 ## Compilation
 The source code for c_ti83p is hosted on [Github](https://github.com/mortonsc/c_ti83p).
@@ -18,7 +18,7 @@ SDCC is available on Windows, so it is possible to compile c_ti83p, but there is
 
 ## Compiling with SDCC and c_ti83p
 In order for a program to use c_ti83p, it must `#include c_ti83p.h`, and be linked against `tios_crt0.rel`
-and `c_ti83p.lib`. `tios_crt0.rel` *must* be listed first.
+and `c_ti83p.lib`. `tios_crt0.rel` *must* be listed before any other file.
 For example, if you wanted to compile a program containing one source file, `main.c`, 
 and have c_ti83p in a directory called `lib`, you would use the following command:
 
@@ -41,8 +41,11 @@ All the other functions and data included with c_ti83p are listed in the `c_ti83
 * [Ion Fastcopy](http://wikiti.brandonw.net/index.php?title=Z80_Routines:Graphic:Fastcopy)
 
 ## License
-This library is free software, licensed under the GNU GPLv3.0.
-See the [license](LICENSE.txt) for details.
+This library is free software, licensed under the GNU General Public License,
+version 3; see the [license](LICENSE.txt) for details.
+There is one special exception: if you link this library in unmodified
+form with other files to produce an executable, this library does not by itself
+cause the resulting executable to be covered by the GNU General Public License.
 All code that I wrote is copyright (C) Scott Morton 2016.
 All other content is copyright (C) its original owner.
 Original authors of code are named when they could be identified.
