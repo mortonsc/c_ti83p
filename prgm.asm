@@ -82,9 +82,8 @@ PrgmNotFound:
         pop ix
         ret
 
-;; CreatePrgm and CreateProtPrgm are nearly identical, except for one byte
-;; name of the requested program; so they jump to a shared body, and push
-;; a flag to indicate what kind of program to make.
+;; CreatePrgm and CreateProtPrgm are nearly identical, so they jump to a
+;; shared body, and push a flag to indicate what kind of program to make.
 
 ;; void *CCreatePrgm(const char *name, int size);
 _CCreatePrgm::
@@ -114,14 +113,17 @@ CreatePrgm:
         pop ix
 MakeNewPrgm:
         pop af ; recall what kind of program to make
-        jr nz,InitPrgm
-        ld a,#ProtProgObj
-        ld (OP1),a
-InitPrgm:
         ld l,6(ix)
         ld h,7(ix) ; load the desired size
         push hl ; save the size
+        jr z,MakeProtPrgm
         bcall _CreateProg
+        jr InitPrgm
+MakeProtPrgm:
+        ld a,#ProtProgObj
+        ld (OP1),a
+        bcall _CreateProtProg
+InitPrgm:
         pop hl
         ex de,hl ; now hl contains address, de contains size
         ld (hl),e ; store the size in the first two bytes of the new object
@@ -148,8 +150,8 @@ ArchivePrgmRet:
         pop ix
         ret
 
-;; void CPrgmAppVar(const char *name);
-_CPrgmAppVar::
+;; void CDeletePrgm(const char *name);
+_CDeletePrgm::
         push ix
         ld ix,#0
         add ix,sp
