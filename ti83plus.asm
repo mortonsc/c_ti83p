@@ -27,12 +27,6 @@
 
 	.globl _CGrBufCpy
 	.globl _CClrLCDFull
-	.globl _CNewLine
-	.globl _CPutC
-	.globl _CPutS
-        .globl _CPutInt
-	.globl _CPutMap
-	.globl _CVPutS
 	.globl _CGetKey
 	.globl _CGetCSC
 	.globl _CTextInvertOn
@@ -63,75 +57,6 @@ _CGrBufCpy::
 _CClrLCDFull::
         bcall _ClrLCDFull
 	ret
-
-
-;; void CNewLine();
-_CNewLine::
-	bcall _newline
-	ret
-
-;; void CPutC(char c);
-_CPutC::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
-
-	ld a,4(ix)
-	bcall _PutC
-
-	pop	ix
-	ret
-
-
-;; void CPutS(const char *s);
-_CPutS::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
-
-	ld l,4(ix)
-	ld h,5(ix)
-	bcall _PutS
-	pop	ix
-	ret
-
-;; void CPutInt(int i);
-_CPutInt:
-        push ix
-        ld ix,#0
-        add ix,sp
-
-        ld l,4(ix)
-        ld h,5(ix)
-        bcall _DispHL
-        pop ix
-        ret
-
-;; void CPutMap(char c);
-_CPutMap::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
-
-	ld a,4(ix)
-	bcall _PutMap
-	pop	ix
-	ret
-
-
-;; void CVPutS(const char *s);
-_CVPutS::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
-
-	ld l,4(ix)
-	ld h,5(ix)
-	bcall _VPutS
-
-	pop	ix
-	ret
-
 
 ;; unsigned char CGetKey();
 _CGetKey::
