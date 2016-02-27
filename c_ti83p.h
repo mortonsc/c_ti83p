@@ -77,18 +77,21 @@ __at 0x86D8 uint8_t penRow;
  * plotSScreen is useful as a buffer to modify the screen,
  * so that it can be updated all at once.
  */
+#define PLOT_S_SCREEN 0x9340
 __at 0x9340 uint8_t plotSScreen[BUFFER_SIZE];
 
 /*
  * This block of RAM is unused by the calculator, so it's useful as backup
  * memory, or to store another version of the screen.
  */
+#define APP_BACKUP_SCREEN 0x9872
 __at 0x9872 uint8_t appBackUpScreen[BUFFER_SIZE];
 
 /*
  * This block of RAM is only used by the calculator is automatic power down
  * is on. If you disable APD it can be used for more additional memory.
  */
+#define SAVE_S_SCREEN 0x86EC
 __at 0x86EC uint8_t saveSScreen[BUFFER_SIZE];
 
 /*
@@ -362,6 +365,17 @@ void CDeletePrgm(const uint8_t *name);
 
 
 /* Everything from here on out is contants taken from ti83plus.inc */
+
+/*
+ * these two tokens have to appear at the beginning of any
+ * compiled assembly program for it to run
+ */
+#define t2ByteTok   0xBB
+#define tasmCmp    0x6D
+
+#define tAdd 0x70
+#define tSub 0x71
+#define tDecPt 0x3A
 
 /* special TI large font character codes   */
 /* other characters are identical to ASCII */
