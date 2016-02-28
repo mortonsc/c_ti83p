@@ -1,6 +1,4 @@
-;; This file contains C wrappers for simple calculator functions
-;; that only require a few lines of assembly.
-;; Most of them are either bare ROM calls or else set a system flag.
+;; This file contains functions for displaying text and other values.
 ;;
 ;; This library is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -25,45 +23,20 @@
 	.module ti83plus
 	.optsdcc -mz80
 
-	.globl _CGrBufCpy
-	.globl _CClrLCDFull
 	.globl _CNewLine
 	.globl _CPutC
 	.globl _CPutS
         .globl _CPutInt
 	.globl _CPutMap
 	.globl _CVPutS
-	.globl _CGetKey
-	.globl _CGetCSC
-	.globl _CTextInvertOn
-	.globl _CTextInvertOff
-	.globl _CLowerCaseOn
-	.globl _CLowerCaseOff
-	.globl _CRunIndicatorOn
-	.globl _CRunIndicatorOff
-	.globl _CEnableAPD
-	.globl _CDisableAPD
-	.globl _CEnable15MHz
-	.globl _CDisable15MHz
 
-	.area _DATA
+        .area _DATA
 
 .nlist
 .include "ti83plus.inc"
 .list
 
-	.area _CODE
-
-;; void CGrBufCpy();
-_CGrBufCpy::
-        bcall _GrBufCpy
-	ret
-
-;; void CClrLCDFull();
-_CClrLCDFull::
-        bcall _ClrLCDFull
-	ret
-
+        .area _CODE
 
 ;; void CNewLine();
 _CNewLine::
@@ -96,7 +69,7 @@ _CPutS::
 	ret
 
 ;; void CPutInt(int i);
-_CPutInt:
+_CPutInt::
         push ix
         ld ix,#0
         add ix,sp
@@ -131,92 +104,4 @@ _CVPutS::
 
 	pop	ix
 	ret
-
-
-;; unsigned char CGetKey();
-_CGetKey::
-	bcall _getkey
-	ld l,a
-	ret
-
-
-;; unsigned char CGetCSC();
-_CGetCSC::
-        bcall _GetCSC
-	ld l,a
-	ret
-
-
-;; void CTextInvertOn();
-_CTextInvertOn::
-	set textInverse,textFlags(iy)
-	ret
-
-
-;; void CTextInvertOff();
-_CTextInvertOff::
-	res textInverse,textFlags(iy)
-	ret
-
-;; void CTextWriteOn();
-_CTextWriteOn::
-	set textWrite,sGrFlags(iy)
-	ret
-
-;; void CTextWriteOff();
-_CTextWriteOff::
-	res textWrite,sGrFlags(iy)
-	ret
-
-;; void CLowerCaseOn();
-_CLowerCaseOn::
-	set lwrCaseActive,appLwrCaseFlag(iy)
-	ret
-
-
-;; void CLowerCaseOff();
-_CLowerCaseOff::
-	res lwrCaseActive,appLwrCaseFlag(iy)
-	ret
-
-
-;; void CRunIndicatorOn();
-_CRunIndicatorOn::
-	bcall _RunIndicOn
-	ret
-
-
-;; void CRunIndicatorOff();
-_CRunIndicatorOff::
-	bcall _RunIndicOff
-	ret
-
-
-;; void CEnableAPD();
-_CEnableAPD::
-        bcall _EnableApd
-	ret
-
-
-;; void CDisableAPD();
-_CDisableAPD::
-	bcall _DisableApd
-	ret
-
-
-;; void CEnable15MHz();
-_CEnable15MHz::
-	in a,(2)
-	and #0x80
-	ret z ; No CPU governor on this calc
-	rlca
-	out (0x20),a ; port 20 controls CPU speed
-	ret
-
-;; void CDisable15MHz();
-_CDisable15MHz::
-	ld a,#0
-	out (0x20),a
-	ret
-
 

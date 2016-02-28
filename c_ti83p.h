@@ -39,12 +39,14 @@
 #ifndef _TI_84_PLUS_INC_H_
 #define _TI_84_PLUS_INC_H_ 1
 
+#include <stdint.h>
+
 /*
  * These two variables specify the location where large text will be displayed.
  * Calling PutC or PutS will change their values.
  */
-__at 0x844C unsigned char curCol;
-__at 0x844B unsigned char curRow;
+__at 0x844C uint8_t curCol;
+__at 0x844B uint8_t curRow;
 
 /*
  * These two variables specify the location where small text will be displayed.
@@ -52,8 +54,8 @@ __at 0x844B unsigned char curRow;
  * Note that their values are measured in pixels, so if you want to go to
  * a new row of text, incrementing penRow will not be sufficient.
  */
-__at 0x86D7 unsigned char penCol;
-__at 0x86D8 unsigned char penRow;
+__at 0x86D7 uint8_t penCol;
+__at 0x86D8 uint8_t penRow;
 
 /*
  * number of bytes in a buffer
@@ -75,19 +77,22 @@ __at 0x86D8 unsigned char penRow;
  * plotSScreen is useful as a buffer to modify the screen,
  * so that it can be updated all at once.
  */
-__at 0x9340 unsigned char plotSScreen[BUFFER_SIZE];
+#define PLOT_S_SCREEN 0x9340
+__at 0x9340 uint8_t plotSScreen[BUFFER_SIZE];
 
 /*
  * This block of RAM is unused by the calculator, so it's useful as backup
  * memory, or to store another version of the screen.
  */
-__at 0x9872 unsigned char appBackUpScreen[BUFFER_SIZE];
+#define APP_BACKUP_SCREEN 0x9872
+__at 0x9872 uint8_t appBackUpScreen[BUFFER_SIZE];
 
 /*
  * This block of RAM is only used by the calculator is automatic power down
  * is on. If you disable APD it can be used for more additional memory.
  */
-__at 0x86EC unsigned char saveSScreen[BUFFER_SIZE];
+#define SAVE_S_SCREEN 0x86EC
+__at 0x86EC uint8_t saveSScreen[BUFFER_SIZE];
 
 /*
  * Updates the LCD to reflect the contents of plotSScreen.
@@ -104,25 +109,25 @@ void CClrLCDFull();
 void CNewLine();
 
 /* prints c in the large font */
-void CPutC(char c);
+void CPutC(uint8_t c);
 /* prints s in the large font */
-void CPutS(const char *s);
-/* prints i in the larget font */
-void CPutInt(int i);
+void CPutS(const uint8_t *s);
+/* prints i in the large font */
+void CPutInt(uint16_t i);
 
 /* prints c in the small font */
-void CPutMap(char c);
+void CPutMap(uint8_t c);
 /* prints s in the small font */
-void CVPutS(const char *s);
+void CVPutS(const uint8_t *s);
 
 /* waits for the user to press a key, then returns the keycode */
-unsigned char CGetKey();
+uint8_t CGetKey();
 
 /*
  * if the user is currently pressing a key, returns its keycode
  * note that this function uses different codes than GetKey()
  */
-unsigned char CGetCSC();
+uint8_t CGetCSC();
 
 /*
  * Any text printed after TextInvertOn is called will appear inverted
@@ -178,9 +183,9 @@ void CDisable15MHz();
  * Generally you will not want to touch the internals of the struct directly.
  */
 typedef struct {
-    unsigned char sign;
-    unsigned char exponent;
-    unsigned char significand[7];
+    uint8_t sign;
+    uint8_t exponent;
+    uint8_t significand[7];
 } FloatingPoint;
 
 /*
@@ -195,14 +200,14 @@ FloatingPoint *CGetAnsFP();
  * Otherwise returns NULL.
  * Valid variable names are capital letters 'A' - 'Z' and L_THETA.
  */
-FloatingPoint *CGetVarFP(char var_name);
+FloatingPoint *CGetVarFP(uint8_t var_name);
 
 /*
  * Returns a pointer to the variable with the given name.
  * If it does not exist, it is created.
  * If it does exist, its value is not necessarily preserved.
  */
-FloatingPoint *CMakeVarFP(char var_name);
+FloatingPoint *CMakeVarFP(uint8_t var_name);
 
 /*
  * Adds the contents of add1 to add2 and stores the result in sum.
@@ -229,6 +234,11 @@ void CMultFP(FloatingPoint *fac1, FloatingPoint *fac2, FloatingPoint *prod);
  */
 void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
                                             FloatingPoint *quot);
+/*
+ * Converts fp to an integer. If the exponent of fp is greater than 3,
+ * returns INT16_MAX.
+ */
+int16_t CFPToInt(FloatingPoint *fp);
 
 /*******GRAPHICS ROUTINES********/
 
@@ -236,9 +246,9 @@ void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
 #define PIC_SIZE_BYTES (96*63)/8
 
 typedef struct {
-    unsigned char height; /* in pixels */
-    unsigned char width; /* in bytes, so width of 2 corresponds to 16 pixels*/
-    unsigned char *contents; /* pointer to array of length height*width */
+    uint8_t height; /* in pixels */
+    uint8_t width; /* in bytes, so width of 2 corresponds to 16 pixels*/
+    uint8_t *contents; /* pointer to array of length height*width */
 } LargeSprite;
 
 /*
@@ -248,7 +258,7 @@ typedef struct {
  * pic0 on the calculator corresponds to picNo = 10.
  * If the requested picture variable does not exist, returns NULL.
  */
-unsigned char *CRecallPic(unsigned char picNo);
+uint8_t *CRecallPic(uint8_t picNo);
 
 /*
  * Creates the given Picture variable and returns a pointer to it.
@@ -256,14 +266,14 @@ unsigned char *CRecallPic(unsigned char picNo);
  * it is archived; if it does not, it is created.
  * The contents of the newly created picture are undefined.
  */
-unsigned char *CCreatePic(unsigned char picNo);
+uint8_t *CCreatePic(uint8_t picNo);
 
 /*
  * If Picture variable picNo exists and is not archived, archives it.
  * Otherwise has no effect.
  * Renders any pointers to this Pic invalid.
  */
-void CArchivePic(unsigned char picNo);
+void CArchivePic(uint8_t picNo);
 
 /*
  * If Picture variable picNo exists, deletes it, even if it is archived.
@@ -271,7 +281,7 @@ void CArchivePic(unsigned char picNo);
  * Any previously obtained pointers to this pic are rendered invalid,
  * and remain so even if it is subsequently recreated.
  */
-void CDeletePic(unsigned char picNo);
+void CDeletePic(uint8_t picNo);
 
 /*
  * Copies the contents of plotSScreen to the LCD.
@@ -285,7 +295,7 @@ void FastCopy();
  * Requires that there is enough space in the buffer to fit the whole sprite;
  * that is, this function does not "clip" sprites.
  */
-void PutLargeSprite(unsigned char x, unsigned char y, LargeSprite *sprite);
+void PutLargeSprite(uint8_t x, uint8_t y, LargeSprite *sprite);
 
 /********AppVar Routines********/
 
@@ -295,7 +305,7 @@ void PutLargeSprite(unsigned char x, unsigned char y, LargeSprite *sprite);
  * Otherwise returns null.
  * If the AppVar exists but is archived, it is unarchived.
  */
-void *CRecallAppVar(const char *name, int *size);
+void *CRecallAppVar(const uint8_t *name, uint16_t *size);
 
 /*
  * Creates a new AppVar with the given name and size, and returns a pointer
@@ -307,13 +317,13 @@ void *CRecallAppVar(const char *name, int *size);
  * (obtained by RecallAppVar(), for example) are no longer valid
  * after a call to this function.
  */
-void *CCreateAppVar(const char *name, int size);
+void *CCreateAppVar(const uint8_t *name, uint16_t size);
 
 /*
  * If an AppVar with the given name exists and is not archived,
  * archives it. Otherwise does nothing.
  */
-void CArchiveAppVar(const char *name);
+void CArchiveAppVar(const uint8_t *name);
 
 /*
  * If an AppVar with the given name exists, deletes it, even if it is archived.
@@ -322,8 +332,57 @@ void CArchiveAppVar(const char *name);
  */
 void CDeleteAppVar(const char *name);
 
+/*******Program Variables********/
+
+
+/*
+ * If a program with the given name exists, returns a pointer to its contents
+ * and stores its size in size. Otherwise returns NULL.
+ * If the program is archived, unarchives it.
+ */
+uint8_t *CRecallPrgm(const uint8_t *name, uint16_t *size);
+
+/*
+ * Creates a new program of the given name and size, and returns a pointer
+ * to its contents. If a program already exists with the same name, it is
+ * deleted, even if it is archived.
+ * This function should be used if you intend to create a TI-Basic program
+ * editable by the user; if you want to create an assembly/machine code
+ * program, use CCreateProtPrgm to prevent the user from editing it.
+ */
+uint8_t *CCreatePrgm(const uint8_t *name, uint16_t size);
+
+/*
+ * Same as CCreatePrgm, except the created program cannot be modified by the
+ * user. Always use this for programs containing machine code.
+ */
+uint8_t *CCreateProtPrgm(const uint8_t *name, uint16_t size);
+
+/*
+ * If a program with the given name exists, archives it.
+ * Otherwise does nothing.
+ */
+void CArchivePrgm(const uint8_t *name);
+
+/*
+ * If a program with the given name exists, deletes it, even if it is archived.
+ * Otherwise has no effect.
+ */
+void CDeletePrgm(const uint8_t *name);
+
 
 /* Everything from here on out is contants taken from ti83plus.inc */
+
+/*
+ * these two tokens have to appear at the beginning of any
+ * compiled assembly program for it to run
+ */
+#define t2ByteTok   0xBB
+#define tasmCmp    0x6D
+
+#define tAdd 0x70
+#define tSub 0x71
+#define tDecPt 0x3A
 
 /* special TI large font character codes   */
 /* other characters are identical to ASCII */

@@ -1,6 +1,10 @@
 ASM=sdasz80
 AFLAGS=-p -g -o
-RELS = ti83plus.rel picvar.rel floatingpoint.rel iongraphics.rel appvar.rel
+ODIR=obj
+SDIR=src
+_RELS=ti83plus.rel picvar.rel floatingpoint.rel iongraphics.rel appvar.rel \
+       output.rel prgm.rel
+RELS := $(addprefix $(ODIR)/,$(_RELS))
 LIB=c_ti83p.lib
 
 .PHONY: all clean
@@ -10,11 +14,15 @@ all: $(LIB) tios_crt0.rel
 $(LIB): $(RELS)
 	sdar -rc $(LIB) $(RELS)
 
-tios_crt0.rel: tios_crt0.s
-	$(ASM) $(AFLAGS) tios_crt0.s
+tios_crt0.rel: $(SDIR)/tios_crt0.s
+	$(ASM) $(AFLAGS) $@ $<
 
-%.rel: %.asm
-	$(ASM) $(AFLAGS) $<
+$(ODIR)/%.rel: $(SDIR)/%.asm | $(ODIR)
+	$(ASM) $(AFLAGS) $@  $<
+
+$(ODIR):
+	mkdir obj
 
 clean:
-	rm -f $(LIB) *.rel
+	rm -f $(LIB) tios_crt0.rel
+	rm -r -f obj
