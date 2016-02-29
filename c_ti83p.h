@@ -375,7 +375,14 @@ void CDeletePrgm(const uint8_t *name);
 
 #define tAdd 0x70
 #define tSub 0x71
+#define tLT 0x6B
+#define tGT 0x6C
+#define tLBrack 0x06
+#define tRBrack 0x07
+#define tLBrace 0x08
+#define tRBrace 0x09
 #define tDecPt 0x3A
+#define tComma  0x2B
 
 /* special TI large font character codes   */
 /* other characters are identical to ASCII */
