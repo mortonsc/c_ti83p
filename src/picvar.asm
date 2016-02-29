@@ -22,7 +22,6 @@
 ;; the executable file might be covered by the GNU General Public License.
 
         .module picvars
-        .optsdcc -mz80
 
         .globl _CRecallPic
         .globl _CCreatePic

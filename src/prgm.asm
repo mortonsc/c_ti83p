@@ -22,7 +22,6 @@
 ;; the executable file might be covered by the GNU General Public License.
 
         .module prgm
-        .optsdcc -mz80
 
         .globl _CRecallPrgm
         .globl _CCreatePrgm

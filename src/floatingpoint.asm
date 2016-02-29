@@ -23,7 +23,6 @@
 ;; the executable file might be covered by the GNU General Public License.
 
         .module floatingpoint
-        .optsdcc -mz80
 
         .globl _CGetAnsFP
         .globl _CGetVarFP

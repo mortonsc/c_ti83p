@@ -19,9 +19,7 @@
 ;; This exception does not however invalidate any other reasons why
 ;; the executable file might be covered by the GNU General Public License.
 
-
 	.module ti83plus
-	.optsdcc -mz80
 
 	.globl _CNewLine
 	.globl _CPutC

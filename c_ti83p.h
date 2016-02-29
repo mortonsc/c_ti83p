@@ -330,7 +330,7 @@ void CArchiveAppVar(const uint8_t *name);
  * Any pointers to an AppVar of this name become invalid, and remain so even
  * if it is subsequently recreated.
  */
-void CDeleteAppVar(const char *name);
+void CDeleteAppVar(const uint8_t *name);
 
 /*******Program Variables********/
 
@@ -740,4 +740,4 @@ void CDeletePrgm(const uint8_t *name);
 #define kwnA			 0x0FB
 
 
-#endif
+#endif /* _TI_84_PLUS_INC_H_ */

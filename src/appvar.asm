@@ -22,7 +22,6 @@
 ;; the executable file might be covered by the GNU General Public License.
 
         .module appvar
-        .optsdcc -mz80
 
         .globl _CRecallAppVar
         .globl _CCreateAppVar
@@ -52,7 +51,7 @@ FindAppVarH:
         bcall _ChkFindSym
         ret
 
-;; void *CRecallAppVar(const char *name, int *size);
+;; void *CRecallAppVar(const uint8_t *name, int *size);
 _CRecallAppVar::
         push ix
         ld ix,#0
@@ -84,7 +83,7 @@ AppVarNotFound:
         pop ix
         ret
 
-;; void *CCreateAppVar(const char *name, int size);
+;; void *CCreateAppVar(const uint8_t *name, int size);
 _CCreateAppVar::
         push ix
         ld ix,#0
@@ -110,7 +109,7 @@ MakeNewVar:
         pop ix
         ret
 
-;; void CArchiveAppVar(const char *name);
+;; void CArchiveAppVar(const uint8_t *name);
 _CArchiveAppVar::
         push ix
         ld ix,#0
@@ -127,7 +126,7 @@ ArchiveAppVarRet:
         pop ix
         ret
 
-;; void CDeleteAppVar(const char *name);
+;; void CDeleteAppVar(const uint8_t *name);
 _CDeleteAppVar::
         push ix
         ld ix,#0

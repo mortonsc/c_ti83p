@@ -26,6 +26,8 @@
 ;; modified in the week of 20 Feb 2016 only to make them compatible
 ;; with sdasz80 and not require any ION includes.
 
+        .module iongraphics
+
 
         .globl _FastCopy
         .globl _PutLargeSprite
