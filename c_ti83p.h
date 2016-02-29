@@ -137,6 +137,13 @@ void CTextInvertOn();
 void CTextInvertOff();
 
 /*
+ * Any text printed after CTextWriteOn is called will be drawn to the buffer
+ * instead of the LCD, until CTextWriteOff is called.
+ */
+void CTextWriteOn();
+void CTextWriteOff();
+
+/*
  * While LowerCase mode is on, the user can enter lowercase characters by
  * pressing [Alpha] twice.
  * Note that LowerCase does *not* need to be on in order to print lowercase

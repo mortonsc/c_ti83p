@@ -83,6 +83,15 @@ _CTextInvertOff::
 	res textInverse,textFlags(iy)
 	ret
 
+;; void CTextWriteOn();
+_CTextWriteOn::
+	set textWrite,sGrFlags(iy)
+	ret
+
+;; void CTextWriteOff();
+_CTextWriteOff::
+	res textWrite,sGrFlags(iy)
+	ret
 
 ;; void CLowerCaseOn();
 _CLowerCaseOn::
