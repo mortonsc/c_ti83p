@@ -240,16 +240,11 @@ void CDivFP(FloatingPoint *dividend, FloatingPoint *divisor,
  */
 int16_t CFPToInt(FloatingPoint *fp);
 
-/*******GRAPHICS ROUTINES********/
+/********Picture Variables********/
 
 /* picture variables don't record the bottom row of pixels */
 #define PIC_SIZE_BYTES (96*63)/8
 
-typedef struct {
-    uint8_t height; /* in pixels */
-    uint8_t width; /* in bytes, so width of 2 corresponds to 16 pixels*/
-    uint8_t *contents; /* pointer to array of length height*width */
-} LargeSprite;
 
 /*
  * Returns a pointer to the picture variable picNo, if it exists.
@@ -283,6 +278,15 @@ void CArchivePic(uint8_t picNo);
  */
 void CDeletePic(uint8_t picNo);
 
+/* Struct representing a sprite that can be printed with PutLargeSprite() */
+typedef struct {
+    uint8_t height; /* in pixels */
+    uint8_t width; /* in bytes, so width of 2 corresponds to 16 pixels*/
+    const uint8_t *contents; /* pointer to array of length height*width */
+} LargeSprite;
+
+/**********Graphics Routines************/
+
 /*
  * Copies the contents of plotSScreen to the LCD.
  * Identical in behavior to GrBufCopy(), but faster.
@@ -290,12 +294,11 @@ void CDeletePic(uint8_t picNo);
 void FastCopy();
 
 /*
- * CURRENTLY DOES NOT WORK
  * Copies sprite to plotSScreen with the upper-left corner at position x,y.
  * Requires that there is enough space in the buffer to fit the whole sprite;
  * that is, this function does not "clip" sprites.
  */
-void PutLargeSprite(uint8_t x, uint8_t y, LargeSprite *sprite);
+void PutLargeSprite(uint8_t x, uint8_t y, const LargeSprite *sprite);
 
 /********AppVar Routines********/
 

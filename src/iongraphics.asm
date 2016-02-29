@@ -76,7 +76,7 @@ fastCopyLoop:
         jr nz,fastCopyAgain
         ret
 
-;; void PutLargeSprite(unsigned char x, unsigned char y, LargeSprite *sprite);
+;; void PutLargeSprite(uint8_t x, uint8_t y, LargeSprite *sprite);
 _PutLargeSprite::
         ; wrapper for largeSprite; takes C arguments from the stack and stores
         ; them in the appropriate registers.
@@ -84,18 +84,21 @@ _PutLargeSprite::
         ld ix,#0
         add ix,sp
 
-        ld a,4(ix)
-        ld d,5(ix) ; this argument will go in l later
-        ld l,6(ix)
+        ld l,6(ix) ; address of struct
         ld h,7(ix)
         ld b,(hl) ; first element of struct is height
         inc hl
-        ld c,(hl) ; then width
-        inc hl  ; finally the actual sprite contents
+        ld c,(hl) ; second is width
+        inc hl
+        ld e,(hl) ; last is the address of the contents
+        inc hl
+        ld d,(hl) 
+        push de
 
-        push hl ; largeSprite takes the address in ix
+        ld a,4(ix) ; first arg is x coord
+        ld l,5(ix) ; second arg is y coord
+
         pop ix ; ok because we don't need the value of ix after this
-        ld l,d
         call largeSpriteH
 
         pop ix
@@ -173,3 +176,4 @@ largeSpriteSkip1:
         djnz   largeSpriteLoop1
         pop   af
         ret
+
