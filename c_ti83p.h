@@ -494,6 +494,19 @@ void CWaitCentis(uint8_t centis);
  */
 void CWaitMillis(uint8_t millis);
 
+/**********Hardware***********/
+
+typedef enum {
+    TI_83_PLUS_BASIC = 0,
+    TI_83_PLUS_SE,
+    TI_84_PLUS_BASIC,
+    TI_84_PLUS_SE
+} Model;
+
+/*
+ * Returns the model of the calculator the program is running on.
+ */
+Model CGetCalcModel();
 
 /* Everything from here on out is contants taken from ti83plus.inc */
 
