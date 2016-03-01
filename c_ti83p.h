@@ -69,30 +69,50 @@ __at 0x86D8 uint8_t penRow;
 #define SCREEN_HEIGHT 64
 
 /*
- * This area of RAM stores the current contents of the graph screen.
+ * Special regions of RAM. To have a variable stored in one of these regions,
+ * specify it using __at, for example:
+ * __at APP_BACKUP_SCREEN int16_t num;
+ * __at SAVE_S_SCREEN uint8_t arr2d[4][7];
+ */
+
+/*
+ * plotSScreen stores the current contents of the graph screen.
  * Each pixel is represented by a single bit: 1 for on, 0 for off.
  * Each row of the screen corresponds to 12 contiguous bytes.
  * The first bit represents the leftmost pixel of the top row.
+ *
+ * plotSScreen contains 768 bytes (=BUFFER_SIZE).
  *
  * plotSScreen is useful as a buffer to modify the screen,
  * so that it can be updated all at once.
  */
 #define PLOT_S_SCREEN 0x9340
-__at 0x9340 uint8_t plotSScreen[BUFFER_SIZE];
 
 /*
- * This block of RAM is unused by the calculator, so it's useful as backup
- * memory, or to store another version of the screen.
+ * appBackUpScreen is reserved by the calculator for use by user programs,
+ * so it's a good place if you need extra memory, or to store another version
+ * of the screen.
+ *
+ * appBackUpScreen contains 768 bytes (=BUFFER_SIZE).
  */
 #define APP_BACKUP_SCREEN 0x9872
-__at 0x9872 uint8_t appBackUpScreen[BUFFER_SIZE];
 
 /*
- * This block of RAM is only used by the calculator is automatic power down
+ * saveSSCreen is only used by the calculator if automatic power down
  * is on. If you disable APD it can be used for more additional memory.
+ *
+ * saveSScreen contains 768 bytes (=BUFFER_SIZE).
  */
 #define SAVE_S_SCREEN 0x86EC
-__at 0x86EC uint8_t saveSScreen[BUFFER_SIZE];
+
+/*
+ * statVars is used by the calculator only for statistics computations.
+ * It contains 531 bytes.
+ */
+#define STAT_VARS 0x8A3A
+
+
+/**********System Routines**********/
 
 /*
  * Updates the LCD to reflect the contents of plotSScreen.
