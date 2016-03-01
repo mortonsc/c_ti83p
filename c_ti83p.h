@@ -259,6 +259,8 @@ uint8_t *CRecallPic(uint8_t picNo);
  * Creates the given Picture variable and returns a pointer to it.
  * If the picture var already exists, it is overwritten, even if
  * it is archived; if it does not, it is created.
+ * If there is not enough space in memory to produce the new picture,
+ * returns NULL.
  * The contents of the newly created picture are undefined.
  */
 uint8_t *CCreatePic(uint8_t picNo);
@@ -328,7 +330,7 @@ void PutLargeSprite(uint8_t x, uint8_t y, const LargeSprite *sprite);
 /*
  * If an AppVar with the given name exists, returns a pointer to its
  * first byte of data and stores its size (in bytes) in *size.
- * Otherwise returns null.
+ * Otherwise returns NULL.
  * If the AppVar exists but is archived, it is unarchived.
  */
 void *CRecallAppVar(const uint8_t *name, uint16_t *size);
@@ -338,6 +340,7 @@ void *CRecallAppVar(const uint8_t *name, uint16_t *size);
  * to its first byte of data. If an AppVar with the same name already exists,
  * it is deleted, including if it is archived.
  * The contents of the newly created AppVar are undefined.
+ * If there is not enough memory to create the AppVar, returns NULL.
  *
  * Any pointers that previously pointed to an AppVar of this name
  * (obtained by RecallAppVar(), for example) are no longer valid
@@ -372,6 +375,8 @@ uint8_t *CRecallPrgm(const uint8_t *name, uint16_t *size);
  * Creates a new program of the given name and size, and returns a pointer
  * to its contents. If a program already exists with the same name, it is
  * deleted, even if it is archived.
+ * If there is not enough memory to create the new program, returns NULL.
+ *
  * This function should be used if you intend to create a TI-Basic program
  * editable by the user; if you want to create an assembly/machine code
  * program, use CCreateProtPrgm to prevent the user from editing it.
