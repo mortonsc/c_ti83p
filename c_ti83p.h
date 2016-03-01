@@ -307,7 +307,7 @@ typedef struct {
  */
 void FastCopy();
 
-void PutSprite(uint8_t x, uint8_t y, const Sprite sprite);
+void PutSprite(uint8_t x, uint8_t y, const Sprite *sprite);
 
 /*
  * Copies sprite to plotSScreen with the upper-left corner at position x,y.

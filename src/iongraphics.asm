@@ -81,7 +81,7 @@ _PutSprite::
        add ix,sp
 
        ld l,6(ix) ; first get the pointer to the sprite struct
-       ld h,5(ix)
+       ld h,7(ix)
        ld b,(hl) ; size of the sprite
        inc hl
        ld e,(hl) ; pointer to its contents
