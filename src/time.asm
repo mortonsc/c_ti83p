@@ -26,6 +26,8 @@
         .module time
 
         .globl _CWaitSecs
+        .globl _CWaitCentis
+        .globl _CWaitMillis
 
         .area _DATA
 
@@ -34,6 +36,36 @@
 .list
 
         .area _CODE
+
+;; void CGetTime(Time *time);
+_CGetTime::
+        push ix
+        ld ix,#0
+        add ix,sp
+
+        ld l,4(ix)
+        ld h,5(ix)
+        push hl         ; ConvOP1 destroys hl
+        bcall _GetTime
+        bcall _ConvOP1 ; first seconds
+        pop hl
+        ld (hl),a
+        inc hl
+        push hl
+        bcall _PopRealO1
+        bcall _PopRealO1
+        bcall _ConvOP1 ; then minutes
+        pop hl
+        ld (hl),a
+        inc hl
+        push hl
+        bcall _PopRealO1
+        bcall _ConvOP1 ; last hours
+        pop hl
+        ld (hl),a
+
+        pop ix
+        ret
 
 ;; void CWaitSecs(uint8_t secs);
 _CWaitSecs::
@@ -53,6 +85,7 @@ _CWaitSecs::
         out (0x32),a ; set how many ticks to wait
         jr WaitLoop
 
+;; void CWaitCentis(uint8_t centis);
 _CWaitCentis::
         push ix
         ld ix,#0
@@ -67,6 +100,7 @@ _CWaitCentis::
         out (0x32),a
         jr WaitLoop
 
+;; void CWaitMillis(uint8_t millis);
 _CWaitMillis::
         push ix
         ld ix,#0

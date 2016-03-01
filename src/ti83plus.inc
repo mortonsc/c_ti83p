@@ -1374,6 +1374,10 @@ _NZIf83Plus		.equ 0x50E0
 ;?
 _InvertTextInsMode	.equ 0x5122
 ;?
+_GetDate                .equ 0x514F ; not on basic TI-83+
+;?
+_GetTime                .equ 0x515B ; not on basic TI-83+
+;?
 _ClrWindowAndFlags	.equ 0x517F
 ;?
 _IsOP1ResID		.equ 0x51B8

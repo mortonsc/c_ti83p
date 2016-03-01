@@ -431,6 +431,23 @@ uint8_t CRandInt(uint8_t max);
 /**********Time*******/
 
 /*
+ * Struct to hold a time, used by CGetTime.
+ */
+typedef struct {
+        uint8_t seconds;
+        uint8_t minutes;
+        uint8_t hours;
+} Time;
+
+/*
+ * Stores the current time, according to the calculator's clock, in time.
+ * Hours are always given in the 24hr format, so 3p.m. is represented as 15.
+ *
+ * This function is not available on the basic TI-83+.
+ */
+void CGetTime(Time *time);
+
+/*
  * Waits for the given number of seconds.
  * The maximum allowable value for secs is 31; if a larger value is given,
  * the function will return instantly.
