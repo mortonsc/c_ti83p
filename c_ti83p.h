@@ -57,36 +57,36 @@ __at 0x844B uint8_t curRow;
 __at 0x86D7 uint8_t penCol;
 __at 0x86D8 uint8_t penRow;
 
-/*
- * number of bytes in a buffer
- *al to (SCREEN_WIDTH*SCREEN_HEIGHT) / 8
- */
-#define BUFFER_SIZE 768
-
 /* width of the screen, in pixels */
 #define SCREEN_WIDTH 96
 /* height of the screen, in pixels */
 #define SCREEN_HEIGHT 64
 
 /*
- * Special regions of RAM. To have a variable stored in one of these regions,
- * specify it using __at, for example:
- * __at APP_BACKUP_SCREEN int16_t num;
- * __at SAVE_S_SCREEN uint8_t arr2d[4][7];
+ * number of bytes in a buffer (one byte per eight pixels)
  */
+#define BUFFER_SIZE 768
+
 
 /*
  * plotSScreen stores the current contents of the graph screen.
  * Each pixel is represented by a single bit: 1 for on, 0 for off.
  * Each row of the screen corresponds to 12 contiguous bytes.
  * The first bit represents the leftmost pixel of the top row.
- *
- * plotSScreen contains 768 bytes (=BUFFER_SIZE).
- *
  * plotSScreen is useful as a buffer to modify the screen,
  * so that it can be updated all at once.
  */
-#define PLOT_S_SCREEN 0x9340
+__at 0x9340 uint8_t plotSScreen[BUFFER_SIZE];
+
+
+/*
+ * Regions of RAM safe for program usage.
+ *
+ * To have a variable stored in one of these regions,
+ * specify it using __at, for example:
+ * __at APP_BACKUP_SCREEN int16_t num;
+ * __at SAVE_S_SCREEN uint8_t arr2d[4][7];
+ */
 
 /*
  * appBackUpScreen is reserved by the calculator for use by user programs,
