@@ -65,16 +65,6 @@ LookUpVarH:
 RealVarName:
         .db RealObj,0,0,0 ; second byte holds variable identifier
 
-;; Copies the contents of OP1 into (de)
-;; Input: de = destination address
-;; destroys: de,hl,bc
-LoadFromOP1H:
-        ld hl,#OP1
-        ld b,#9
-        ld c,#0
-        ldir
-        ret
-
 ;; FloatingPoint *CGetAnsFP();
 _CGetVarFP::
         push ix
@@ -127,7 +117,7 @@ _CAddFP::
         rst rFPADD
         ld e,8(ix) ; load return destination
         ld d,9(ix)
-        call LoadFromOP1H
+        bcall _MovFrOP1
         pop ix
         ret
 
@@ -145,7 +135,7 @@ _CSubFP::
         bcall _FPSub
         ld e,8(ix) ; load return destination
         ld d,9(ix)
-        call LoadFromOP1H
+        bcall _MovFrOP1
         pop ix
         ret
 
@@ -163,7 +153,7 @@ _CMultFP::
         bcall _FPMult
         ld e,8(ix) ; load return destination
         ld d,9(ix)
-        call LoadFromOP1H
+        bcall _MovFrOP1
         pop ix
         ret
 
@@ -182,7 +172,7 @@ _CDivFP::
         bcall _fpdiv
         ld e,8(ix) ; load return destination
         ld d,9(ix)
-        call LoadFromOP1H
+        bcall _MovFrOP1
         pop ix
         ret
 
