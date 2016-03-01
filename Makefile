@@ -3,7 +3,7 @@ AFLAGS=-p -g -o
 ODIR=obj
 SDIR=src
 _RELS=ti83plus.rel picvar.rel floatingpoint.rel iongraphics.rel appvar.rel \
-       output.rel prgm.rel rand.rel
+       output.rel prgm.rel rand.rel time.rel
 RELS := $(addprefix $(ODIR)/,$(_RELS))
 LIB=c_ti83p.lib
 

@@ -428,6 +428,33 @@ void CDeletePrgm(const uint8_t *name);
  */
 uint8_t CRandInt(uint8_t max);
 
+/**********Time*******/
+
+/*
+ * Waits for the given number of seconds.
+ * The maximum allowable value for secs is 31; if a larger value is given,
+ * the function will return instantly.
+ *
+ * This function is not available on the basic TI-83+.
+ */
+void CWaitSecs(uint8_t secs);
+
+/*
+ * Waits for the given number of centiseconds.
+ * (A centisecond is 1/100 of a second.)
+ *
+ * This function is not available on the basic TI-83+.
+ */
+void CWaitCentis(uint8_t centis);
+
+/*
+ * Waits for the given number of milliseconds.
+ * (A millisecond is 1/1000 of a second.)
+ *
+ * This function is not available on the basic TI-83+.
+ */
+void CWaitMillis(uint8_t millis);
+
 
 /* Everything from here on out is contants taken from ti83plus.inc */
 
