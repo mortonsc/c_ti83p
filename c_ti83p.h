@@ -421,6 +421,13 @@ void CArchivePrgm(const uint8_t *name);
  */
 void CDeletePrgm(const uint8_t *name);
 
+/***********Random Numbers***************/
+
+/*
+ * Returns a pseudo-random integer, 0 <= n < max.
+ */
+uint8_t CRandInt(uint8_t max);
+
 
 /* Everything from here on out is contants taken from ti83plus.inc */
 
