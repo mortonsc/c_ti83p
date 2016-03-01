@@ -278,20 +278,36 @@ void CArchivePic(uint8_t picNo);
  */
 void CDeletePic(uint8_t picNo);
 
-/* Struct representing a sprite that can be printed with PutLargeSprite() */
+
+/**********Graphics Routines************/
+
+/*
+ * Struct representing a sprite that can be printed with PutSprite.
+ * It always has a width of 8 pixels.
+ * contents is an array containing the image, represented as a bitmap.
+ */
+typedef struct {
+    uint8_t height; /* in pixels */
+    const uint8_t *contents; /* pointer to array of length height */
+} Sprite;
+
+/*
+ * Struct representing a sprite that can be printed with PutLargeSprite.
+ * Identical to a Sprite, except it may have arbitrary width.
+ */
 typedef struct {
     uint8_t height; /* in pixels */
     uint8_t width; /* in bytes, so width of 2 corresponds to 16 pixels*/
     const uint8_t *contents; /* pointer to array of length height*width */
 } LargeSprite;
 
-/**********Graphics Routines************/
-
 /*
  * Copies the contents of plotSScreen to the LCD.
  * Identical in behavior to GrBufCopy(), but faster.
  */
 void FastCopy();
+
+void PutSprite(uint8_t x, uint8_t y, const Sprite sprite);
 
 /*
  * Copies sprite to plotSScreen with the upper-left corner at position x,y.

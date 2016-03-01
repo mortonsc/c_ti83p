@@ -22,8 +22,8 @@
 ;; the executable file might be covered by the GNU General Public License.
 ;;
 ;; The routines themselves were written by Joe Wingbermuehle,
-;; and were copied directly the source on wikiti.brandonw.net,
-;; modified in the week of 20 Feb 2016 only to make them compatible
+;; and were copied directly from the ION Shell source code,
+;; modified in the month of February 2016 only to make them compatible
 ;; with sdasz80 and not require any ION includes.
 
         .module iongraphics
@@ -48,9 +48,7 @@ _FastCopy::
         di
         ld a,#0x80
         out (0x10),a
-
         ld hl, #plotSScreen-12-(-(12*64)+1)
-
         ld a,#0x20
         ld c,a
         inc hl
@@ -58,7 +56,7 @@ _FastCopy::
 fastCopyAgain:
         ld b,#64
         inc c
-        ld de,#-767
+	ld de,#-(12*64)+1
         out (0x10),a
         add hl,de
         ld de,#10
@@ -76,10 +74,79 @@ fastCopyLoop:
         jr nz,fastCopyAgain
         ret
 
+;; void PutSprite(uint8_t x, uint8_t y, const Sprite *sprite);
+_PutSprite::
+       push ix
+       ld ix,#0
+       add ix,sp
+
+       ld l,6(ix) ; first get the pointer to the sprite struct
+       ld h,5(ix)
+       ld b,(hl) ; size of the sprite
+       inc hl
+       ld e,(hl) ; pointer to its contents
+       inc hl
+       ld d,(hl)
+       push de
+
+       ld a,4(ix) ; x coord
+       ld l,5(ix) ; y coord
+
+       pop ix
+       call ionPutSprite
+       pop ix
+       ret
+
+
+;-----> Draw a sprite
+; b=size of sprite
+; l=yc
+; a=xc
+; ix holds pointer
+ionPutSprite:
+	ld	e,l
+	ld	h,#0x00
+	ld	d,h
+	add	hl,de
+	add	hl,de
+	add	hl,hl
+	add	hl,hl
+	ld	e,a
+	and	#0x07
+	ld	c,a
+	srl	e
+	srl	e
+	srl	e
+	add	hl,de
+	ld	de,#plotSScreen
+	add	hl,de
+putSpriteLoop1:
+sl1:	ld	d,(ix)
+	ld	e,#0x00
+	ld	a,c
+	or	a
+	jr	z,putSpriteSkip1
+putSpriteLoop2:
+	srl	d
+	rr	e
+	dec	a
+	jr	nz,putSpriteLoop2
+putSpriteSkip1:
+	ld	a,(hl)
+	xor	d
+	ld	(hl),a
+	inc	hl
+	ld	a,(hl)
+	xor	e
+	ld	(hl),a
+	ld	de,#0x0B
+	add	hl,de
+	inc	ix
+	djnz	putSpriteLoop1
+	ret
+
 ;; void PutLargeSprite(uint8_t x, uint8_t y, LargeSprite *sprite);
 _PutLargeSprite::
-        ; wrapper for largeSprite; takes C arguments from the stack and stores
-        ; them in the appropriate registers.
         push ix
         ld ix,#0
         add ix,sp
@@ -92,27 +159,27 @@ _PutLargeSprite::
         inc hl
         ld e,(hl) ; last is the address of the contents
         inc hl
-        ld d,(hl) 
+        ld d,(hl)
         push de
 
         ld a,4(ix) ; first arg is x coord
         ld l,5(ix) ; second arg is y coord
 
         pop ix ; ok because we don't need the value of ix after this
-        call largeSpriteH
+        call ionLargeSprite
 
         pop ix
         ret
 
-;=======================
-;LargeSprite
-;by Joe Wingbermuehle
-;=======================
-;Does:   Copy a sprite to the gbuf
-;Input:  ix=sprite address, a='x', l='y', b='height' (in pixels), c='width' (in bytes, e.g. 2 would be 16)
-;Output: The sprite is copied to the gbuf
-;-----------------------
-largeSpriteH:
+;-----> Draw a picture
+;Input:	ix->sprite
+;	a=x
+;	l=y
+;	b=height	(in pixels)
+;	c=width		(in bytes, e.g. 2 would be 16)
+;Output: nothing
+; All registers are destroyed except bc', de', hl'
+ionLargeSprite:
         di
         ex   af,af'
 
