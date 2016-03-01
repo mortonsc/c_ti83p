@@ -57,25 +57,29 @@ _CRecallPic::
 	add	ix,sp
         ld a,4(ix)
         call FindPicH
-        jr c,PicNotFound
+        jr c,PicFailed
         ld a,b
         or a ; check if pic is in RAM (not archived)
         jr z,PicInRam
+        AppOnErr UnarchivePicFailed
         push ix ; ArcUnarc destorys all regs, including OP1
         bcall _PushRealO1
         bcall _Arc_Unarc
         bcall _PopRealO1
         pop ix
+        AppOffErr
         rst rFINDSYM ; find the unarchived pic again using the name in OP1
 PicInRam:
         ex de,hl    ; move address of pic to hl
         inc hl
         inc hl  ; first 2 bytes are the size of the image
-        jr CRecallPicRet
-PicNotFound:
-        ld h,#0
-        ld l,#0
-CRecallPicRet:
+        pop ix
+        ret
+UnarchivePicFailed:
+        bcall _PopRealO1
+        pop ix
+PicFailed:
+        ld hl,#0
         pop ix
         ret
 
@@ -92,7 +96,9 @@ _CCreatePic::
         bcall _DelVarArc ; delete the var if it exists
         pop ix
 CreatePic:
+        AppOnErr InsufficientMem
         bcall _CreatePict ; name is still stored in OP1
+        AppOffErr
         ex de,hl
         ld a,#0xF4 ; store size of image in first 2 bytes
         ld (hl),a
@@ -100,6 +106,10 @@ CreatePic:
         ld a,#0x02
         ld (hl),a
         inc hl
+        pop ix
+        ret
+InsufficientMem:
+        ld hl,#0
         pop ix
         ret
 
@@ -114,7 +124,9 @@ _CArchivePic::
         ld a,b
         or a
         jr nz,ArchivePicRet ; pic already archived
+        AppOnErr ArchivePicRet
         bcall _Arc_Unarc
+        AppOffErr
 ArchivePicRet:
         pop ix
         ret

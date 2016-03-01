@@ -76,7 +76,7 @@ APP_PUSH_ERRORH		.equ 0x59
 APP_POP_ERRORH		.equ 0x5C
 
 .macro  AppOnErr xxxx
-        ld hl,xxxx
+        ld hl,#xxxx
         call #0x59
 .endm
 

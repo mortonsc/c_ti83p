@@ -49,7 +49,7 @@ FindPrgmH:
         bcall _ChkFindSym
         ret
 
-;; void *CRecallPrgm(const char *name, int *size);
+;; void *CRecallPrgm(const uint8_t *name, uint16_t *size);
 _CRecallPrgm::
         push ix
         ld ix,#0
@@ -57,15 +57,17 @@ _CRecallPrgm::
         ld l,4(ix)
         ld h,5(ix)
         call FindPrgmH
-        jr c,PrgmNotFound
+        jr c,PrgmFailed
         ld a,b
         or a ; check if archived
         jr z,PrgmInRam
+        AppOnErr UnarchivePrgmFailed
         push ix ; _Arc_Unarc destroys all regs
-        bcall _PushRealO1
+        rst rPUSHREALO1
         bcall _Arc_Unarc
         bcall _PopRealO1
         pop ix
+        AppOffErr
         bcall _ChkFindSym ; find the new address
 PrgmInRam:
         ex de,hl ; move address to hl
@@ -75,16 +77,18 @@ PrgmInRam:
         ldi ; and return the address of actual contents
         pop ix
         ret
-PrgmNotFound:
-        ld l,#0 ; return null for var address
-        ld h,#0 ; and leave the second argument alone
+UnarchivePrgmFailed:
+        bcall _PopRealO1
+        pop ix
+PrgmFailed:
+        ld hl,#0; return null for var address
         pop ix
         ret
 
 ;; CreatePrgm and CreateProtPrgm are nearly identical, so they jump to a
 ;; shared body, and push a flag to indicate what kind of program to make.
 
-;; void *CCreatePrgm(const char *name, int size);
+;; void *CCreatePrgm(const uint8_t *name, uint16_t size);
 _CCreatePrgm::
         push ix
         ld ix,#0
@@ -94,7 +98,7 @@ _CCreatePrgm::
         push af
         jr CreatePrgm
 
-;; void *CCreateProtPrgm(const char *name, int size);
+;; void *CCreateProtPrgm(const uint8_t *name, uint16_t size);
 _CCreateProtPrgm::
         push ix
         ld ix,#0
@@ -112,6 +116,7 @@ CreatePrgm:
         pop ix
 MakeNewPrgm:
         pop af ; recall what kind of program to make
+        AppOnErr InsufficientMem
         ld l,6(ix)
         ld h,7(ix) ; load the desired size
         push hl ; save the size
@@ -131,8 +136,12 @@ InitPrgm:
         inc hl ; return the address of the data
         pop ix
         ret
+InsufficientMem:
+        ld hl,#0 ; failed to create program, return null
+        pop ix
+        ret
 
-;; void CArchivePrgm(const char *name);
+;; void CArchivePrgm(const uint8_t *name);
 _CArchivePrgm::
         push ix
         ld ix,#0
@@ -144,12 +153,14 @@ _CArchivePrgm::
         ld a,b
         or a   ; check if the var is already archived
         jr nz,ArchivePrgmRet
+        AppOnErr ArchivePrgmRet
         bcall _Arc_Unarc
+        AppOffErr
 ArchivePrgmRet:
         pop ix
         ret
 
-;; void CDeletePrgm(const char *name);
+;; void CDeletePrgm(const uint8_t *name);
 _CDeletePrgm::
         push ix
         ld ix,#0

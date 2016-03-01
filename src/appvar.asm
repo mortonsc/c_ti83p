@@ -59,15 +59,17 @@ _CRecallAppVar::
         ld l,4(ix)
         ld h,5(ix)
         call FindAppVarH
-        jr c,AppVarNotFound
+        jr c,AppVarFailed
         ld a,b
         or a ; check if AppVar is archived
         jr z,AppVarInRam
+        AppOnErr UnarchiveAppVarFailed
         push ix ; _Arc_Unarc destroys all regs
-        bcall _PushRealO1
+        rst rPUSHREALO1
         bcall _Arc_Unarc
         bcall _PopRealO1
         pop ix
+        AppOffErr
         bcall _ChkFindSym ; find the new address of the var
 AppVarInRam:
         ex de,hl ; move address of var to hl
@@ -77,9 +79,11 @@ AppVarInRam:
         ldi ; and return the address of actual contents
         pop ix
         ret
-AppVarNotFound:
-        ld l,#0 ; return null for var address
-        ld h,#0 ; and leave the second argument alone
+UnarchiveAppVarFailed:
+        bcall _PopRealO1
+        pop ix
+AppVarFailed:
+        ld hl,#0 ; return null for var address
         pop ix
         ret
 
@@ -96,16 +100,22 @@ _CCreateAppVar::
         bcall _DelVarArc ; delete the AppVar if it exists
         pop ix
 MakeNewVar:
+        AppOnErr InsufficientMem
         ld l,6(ix)
         ld h,7(ix) ; load the desired size
         push hl ; save the size
         bcall _CreateAppVar
         pop hl
+        AppOffErr
         ex de,hl ; now hl contains address, de contains size
         ld (hl),e ; store the size in the first two bytes of the new object
         inc hl
         ld (hl),d
         inc hl ; return the address of the data
+        pop ix
+        ret
+InsufficientMem:
+        ld hl,#0 ; failed to create var, so return null
         pop ix
         ret
 
@@ -121,7 +131,9 @@ _CArchiveAppVar::
         ld a,b
         or a   ; check if the var is already archived
         jr nz,ArchiveAppVarRet
+        AppOnErr ArchivePrgmRet
         bcall _Arc_Unarc
+        AppOffErr
 ArchiveAppVarRet:
         pop ix
         ret
