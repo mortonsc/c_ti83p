@@ -99,6 +99,21 @@ _CGetDate::
         pop ix
         ret
 
+;; uint32_t GetTimeSecs();
+_CGetTimeSecs::
+        ; 32bit return values go in dehl
+        ; the time is stored in ports 0x45(lsb) - 0x48
+        ld c,#0x45
+        in l,(c);
+        inc c;
+        in h,(c);
+        inc c;
+        in e,(c);
+        inc c;
+        in d,(c);
+
+        ret
+
 ;; void CWaitSecs(uint8_t secs);
 _CWaitSecs::
         push ix

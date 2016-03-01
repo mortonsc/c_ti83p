@@ -464,6 +464,12 @@ void CGetTime(Time *time);
 void CGetDate(Date *date);
 
 /*
+ * Returns the current system time as the number of seconds since
+ * midnight, January 1st, 1997.
+ */
+uint32_t CGetTimeSecs();
+
+/*
  * Waits for the given number of seconds.
  * The maximum allowable value for secs is 31; if a larger value is given,
  * the function will return instantly.
