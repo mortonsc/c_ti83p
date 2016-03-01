@@ -440,12 +440,28 @@ typedef struct {
 } Time;
 
 /*
+ * Struct to hold a date, used by CGetDate.
+ */
+typedef struct {
+    uint8_t day;
+    uint8_t month;
+    uint16_t year;
+} Date;
+
+/*
  * Stores the current time, according to the calculator's clock, in time.
  * Hours are always given in the 24hr format, so 3p.m. is represented as 15.
  *
  * This function is not available on the basic TI-83+.
  */
 void CGetTime(Time *time);
+
+/*
+ * Stores the current date, according to the calculator's clock, in date.
+ *
+ * This function is not available on the basic TI-83+.
+ */
+void CGetDate(Date *date);
 
 /*
  * Waits for the given number of seconds.

@@ -67,6 +67,38 @@ _CGetTime::
         pop ix
         ret
 
+;; void CGetDate(Date *date);
+_CGetDate::
+        push ix
+        ld ix,#0
+        add ix,sp
+
+        ld l,4(ix)
+        ld h,5(ix)
+        push hl         ; ConvOP1 destroys hl
+        bcall _GetDate
+        bcall _ConvOP1 ; first day
+        pop hl
+        ld (hl),a
+        inc hl
+        push hl
+        bcall _PopRealO1
+        bcall _PopRealO1
+        bcall _ConvOP1 ; then month
+        pop hl
+        ld (hl),a
+        inc hl
+        push hl
+        bcall _PopRealO1
+        bcall _ConvOP1 ; last year
+        pop hl
+        ld (hl),e
+        inc hl
+        ld (hl),d
+
+        pop ix
+        ret
+
 ;; void CWaitSecs(uint8_t secs);
 _CWaitSecs::
         push ix
