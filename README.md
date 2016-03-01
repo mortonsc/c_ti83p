@@ -11,7 +11,7 @@ To download and compile, open a terminal window and navigate to the directory yo
 Then execute the following:
 
     git clone https://github.com/mortonsc/c_ti83p.git
-    make
+    cd c_ti83p && make
 
 ### Windows
 SDCC is available on Windows, so it is possible to compile c_ti83p, but there is currently no official compile script.
@@ -24,10 +24,11 @@ and have c_ti83p in a directory called `lib`, you would use the following comman
 
     sdcc -mz80 --std-sdcc99 --reserve-regs-iy --max-allocs-per-node 30000 --code-loc 0x9D9B --data-loc 0 \
       --no-std-crt0 lib/tios_crt0.rel lib/c_ti83p.lib main.c
-This will produce `main.ihx` as output, which can be converted to a calculator executable using tools like
-[hex2bin](http://hex2bin.sourceforge.net/) and [binpac8x](http://www.ticalc.org/archives/files/fileinfo/429/42915.html).
+This will produce `main.ihx` as output, which can then be converted to a binary file using sdobjcopy, which comes with
+SDCC, and then converted to a calculator executable using a tool like
+[binpac8x](http://www.ticalc.org/archives/files/fileinfo/429/42915.html).
 
-Because the compilation command is so involved, I strongly recommend automating your compilation process.
+Because the compilation process is so involved, I strongly recommend automating it.
 An example of a project using c_ti83p can be found [here](https://github.com/mortonsc/TIgameoflife);
 you can use its makefile as a model.
 
@@ -37,15 +38,16 @@ All the other functions and data included with c_ti83p are listed in the `c_ti83
 * defines for non-ASCII text characters and keycodes
 * functions to print text in large and small font
 * access to system variables, including pointers to the graph buffer and to the large areas of free RAM
-* a function to allow your program to run at 15MHz, instead of the standard 6MHz (doesn't work for TI-83+)
-* [Ion Fastcopy](http://wikiti.brandonw.net/index.php?title=Z80_Routines:Graphic:Fastcopy)
+* functions to read, write and create picture variables, appvars, and programs
+* graphics routines from Ion shell
 
 ## License
 This library is free software, licensed under the GNU General Public License,
 version 3; see the [license](LICENSE.txt) for details.
-There is one special exception: if you link this library in unmodified
+There is one special exception to the license terms: if you link this library in unmodified
 form with other files to produce an executable, this library does not by itself
 cause the resulting executable to be covered by the GNU General Public License.
+
 All code that I wrote is copyright (C) Scott Morton 2016.
 All other content is copyright (C) its original owner.
 Original authors of code are named when they could be identified.
