@@ -86,7 +86,7 @@ _CGetDate::
         inc hl
         push hl
         bcall _PopRealO1
-        bcall _ConvOP1 ; last year
+        bcall _ConvOP1 ; finally year
         pop hl
         ld (hl),e
         inc hl
@@ -95,8 +95,8 @@ _CGetDate::
         pop ix
         ret
 
-;; uint32_t GetTimeSecs();
-_CGetTimeSecs::
+;; uint32_t CStartTimer();
+_CStartTimer::
         ; 32bit return values go in dehl
         ; the time is stored in ports 0x45(lsb) - 0x48
         ld c,#0x45
@@ -107,8 +107,27 @@ _CGetTimeSecs::
         in e,(c);
         inc c;
         in d,(c);
-
         ret
+
+;; uint32_t CCheckTimer(uint32_t start_time);
+_CCheckTimer::
+        push ix
+        ld ix,#0
+        add ix,sp
+
+        call _CStartTimer
+        ld c,4(ix)
+        ld b,5(ix)
+        or a
+        sbc hl,bc
+        ex de,hl
+        ld c,6(ix)
+        ld b,7(ix)
+        sbc hl,bc
+        ex de,hl
+        pop ix
+        ret
+
 
 ;; void CWaitSecs(uint8_t secs);
 _CWaitSecs::

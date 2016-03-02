@@ -509,9 +509,20 @@ void CGetDate(Date *date);
 
 /*
  * Returns the current system time as the number of seconds since
- * midnight, January 1st, 1997.
+ * midnight, January 1st, 1997. This value can then be used as the argument
+ * to CCheckTimer to find out how much time has elapsed.
  */
-uint32_t CGetTimeSecs();
+uint32_t CStartTimer();
+
+/*
+ * Returns how much time has elapsed, in seconds, since start_time.
+ * start_time should be a value previously obtained from CStartTimer.
+ *
+ * Unless it has been more than 18 hours since you called CStartTimer,
+ * the higher two bytes of the return value will be 0, and you can use
+ * it as a 16-bit integer.
+ */
+uint32_t CCheckTimer(uint32_t start_time);
 
 /*
  * Waits for the given number of seconds.
