@@ -18,15 +18,11 @@
 ;; the resulting executable to be covered by the GNU General Public License.
 ;; This exception does not however invalidate any other reasons why
 ;; the executable file might be covered by the GNU General Public License.
+;;
+;; Some of these functions were taken in part or in whole from Kevin Horowitz's
+;; Axe Parser routines.
 
-	.module ti83plus
-
-	.globl _CNewLine
-	.globl _CPutC
-	.globl _CPutS
-        .globl _CPutInt
-	.globl _CPutMap
-	.globl _CVPutS
+	.module output
 
         .area _DATA
 
@@ -41,21 +37,19 @@ _CNewLine::
 	bcall _newline
 	ret
 
-;; void CPutC(char c);
-_CPutC::
+;; void CDispChar(uint8_t c);
+_CDispChar::
 	push	ix
 	ld	ix,#0
 	add	ix,sp
 
 	ld a,4(ix)
 	bcall _PutC
-
 	pop	ix
 	ret
 
-
-;; void CPutS(const char *s);
-_CPutS::
+;; void CDispStr(const uint8_t *s);
+_CDispStr::
 	push	ix
 	ld	ix,#0
 	add	ix,sp
@@ -66,8 +60,8 @@ _CPutS::
 	pop	ix
 	ret
 
-;; void CPutInt(int i);
-_CPutInt::
+;; void CDispInt(uint16_t i);
+_CDispInt::
         push ix
         ld ix,#0
         add ix,sp
@@ -78,20 +72,44 @@ _CPutInt::
         pop ix
         ret
 
-;; void CPutMap(char c);
-_CPutMap::
+;; void CDispTok(uint8_t tok);
+_CDispTok::
+        push ix
+        ld ix,#0
+        add ix,sp
+
+        ld e,4(ix)
+        ld d,#0
+        bcall _PutTokString
+        pop ix
+        ret
+
+;; void CDisp2ByteTok(uint8_t tok1, uint8_t tok2);
+_CDisp2ByteTok::
+        push ix
+        ld ix,#0
+        add ix,sp
+
+        ld d,4(ix)
+        ld e,5(ix)
+        bcall _PutTokString
+        pop ix
+        ret
+
+;; void CTextChar(uint8_t c);
+_CTextChar::
 	push	ix
 	ld	ix,#0
 	add	ix,sp
 
 	ld a,4(ix)
-	bcall _PutMap
+	bcall _VPutMap
 	pop	ix
 	ret
 
 
-;; void CVPutS(const char *s);
-_CVPutS::
+;; void CTextStr(const uint8_t *s);
+_CTextStr::
 	push	ix
 	ld	ix,#0
 	add	ix,sp
@@ -102,4 +120,37 @@ _CVPutS::
 
 	pop	ix
 	ret
+
+;; void CTextInt(uint16_t i);
+_CTextInt::
+        push ix
+        ld ix,#0
+        add ix,sp
+
+        ld l,4(ix)
+        ld h,5(ix)
+        bcall _SetXXXXOP2
+        bcall _OP2ToOP1
+        ld a,#5
+        bcall _DispOP1A
+        pop ix
+        ret
+
+;; void CTextTok(uint8_t tok);
+_CTextTok::
+        ld hl,#2  ; _Get_Tok_Strng expects a pointer to a token
+        add hl,sp ; but the C function takes a value
+
+        bcall _GET_TOK_STRNG
+        ld b,a  ; number of characters to display
+        ld hl,#OP3
+        bcall _VPutSN
+        ret
+
+;; as it happens, the process for displaying 1-byte/2-byte tokens is the same
+;; the C wrappers are different because they have different signatures
+
+;; void CText2ByteTok(uint8_t tok1, uint8_t tok2);
+_CText2ByteTok::
+        jr _CTextTok
 

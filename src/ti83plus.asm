@@ -27,8 +27,6 @@
 
 	.globl _CGrBufCpy
 	.globl _CClrLCDFull
-	.globl _CGetKey
-	.globl _CGetCSC
 	.globl _CTextInvertOn
 	.globl _CTextInvertOff
 	.globl _CLowerCaseOn

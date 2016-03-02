@@ -125,20 +125,6 @@ void CGrBufCpy();
 /* clears the LCD */
 void CClrLCDFull();
 
-/* Moves text position to the next line of the screen */
-void CNewLine();
-
-/* prints c in the large font */
-void CPutC(uint8_t c);
-/* prints s in the large font */
-void CPutS(const uint8_t *s);
-/* prints i in the large font */
-void CPutInt(uint16_t i);
-
-/* prints c in the small font */
-void CPutMap(uint8_t c);
-/* prints s in the small font */
-void CVPutS(const uint8_t *s);
 
 /* waits for the user to press a key, then returns the keycode. */
 uint8_t CGetKey();
@@ -201,6 +187,58 @@ void CDisableAPD();
  */
 void CEnable15MHz();
 void CDisable15MHz();
+
+/*******Text Output*********/
+
+/* Moves text position to the next line of the screen */
+void CNewLine();
+
+/* Prints c in the large font, and advances the cursor */
+void CDispChar(uint8_t c);
+
+/* Prints s in the large font, and advances the cursor */
+void CDispStr(const uint8_t *s);
+
+/*
+ * Prints i in the large font, and advances the cursor.
+ * This function always prints five characters: the number is
+ * right-justified, with leading spaces.
+ */
+void CDispInt(uint16_t i);
+
+/*
+ * Displays the string correspond to the one-byte token tok in the large font.
+ */
+void CDispTok(uint8_t tok);
+
+/*
+ * Displays the string correspond to the two-byte token tok1, tok2
+ * in the large font.
+ */
+void CDisp2ByteTok(uint8_t tok1, uint8_t tok2);
+
+/* Prints c in the small font. */
+void CTextChar(uint8_t c);
+
+/* Prints s in the small font. */
+void CTextStr(const uint8_t *s);
+
+/*
+ * Prints i in the small font. This function always prints 5 characters.
+ * The number is right-justified with leading spaces.
+ */
+void CTextInt(uint16_t i);
+
+/*
+ * Displays the string correspond to the one-byte token tok in the small font.
+ */
+void CTextTok(uint8_t tok);
+
+/*
+ * Displays the string correspond to the two-byte token tok1, tok2
+ * in the small font.
+ */
+void CText2ByteTok(uint8_t tok1, uint8_t tok2);
 
 /*******FLOATING POINT OPERATIONS****/
 
