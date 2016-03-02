@@ -23,12 +23,6 @@
 
         .module prgm
 
-        .globl _CRecallPrgm
-        .globl _CCreatePrgm
-        .globl _CCreateProtPrgm
-        .globl _CArchivePrgm
-        .globl _CDeletePrgm
-
         .area _DATA
 
 .nlist

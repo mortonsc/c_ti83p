@@ -23,20 +23,6 @@
 
 
 	.module ti83plus
-	.optsdcc -mz80
-
-	.globl _CGrBufCpy
-	.globl _CClrLCDFull
-	.globl _CTextInvertOn
-	.globl _CTextInvertOff
-	.globl _CLowerCaseOn
-	.globl _CLowerCaseOff
-	.globl _CRunIndicatorOn
-	.globl _CRunIndicatorOff
-	.globl _CEnableAPD
-	.globl _CDisableAPD
-	.globl _CEnable15MHz
-	.globl _CDisable15MHz
 
 	.area _DATA
 

@@ -23,11 +23,6 @@
 
         .module appvar
 
-        .globl _CRecallAppVar
-        .globl _CCreateAppVar
-        .globl _CArchiveAppVar
-        .globl _CDeleteAppVar
-
         .area _DATA
 
 .nlist

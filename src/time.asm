@@ -25,10 +25,6 @@
 
         .module time
 
-        .globl _CWaitSecs
-        .globl _CWaitCentis
-        .globl _CWaitMillis
-
         .area _DATA
 
 .nlist

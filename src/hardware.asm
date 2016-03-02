@@ -23,8 +23,6 @@
 
         .module hardware
 
-        .globl _CGetCalcModel
-
         .area _DATA
 
 .nlist

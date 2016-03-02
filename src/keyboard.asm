@@ -23,8 +23,6 @@
 
         .module keyboard
 
-        .globl _CIsKeyPressed
-
         .area _DATA
 
 .nlist

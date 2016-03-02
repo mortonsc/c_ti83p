@@ -24,14 +24,6 @@
 
         .module floatingpoint
 
-        .globl _CGetAnsFP
-        .globl _CGetVarFP
-        .globl _CMakeVarFP
-        .globl _CAddFP
-        .globl _CSubFP
-        .globl _CMultFP
-        .globl _CDivFP
-
         .area _DATA
 
 .nlist

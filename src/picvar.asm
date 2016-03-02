@@ -23,11 +23,6 @@
 
         .module picvars
 
-        .globl _CRecallPic
-        .globl _CCreatePic
-        .globl _CArchivePic
-        .globl _CDeletePic
-
         .area _DATA
 
 .nlist

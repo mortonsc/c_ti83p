@@ -27,8 +27,6 @@
 
         .module rand
 
-        .globl _CRandInt
-
         .area _DATA
 
 .nlist

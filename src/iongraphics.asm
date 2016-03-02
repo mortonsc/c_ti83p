@@ -28,10 +28,6 @@
 
         .module iongraphics
 
-
-        .globl _FastCopy
-        .globl _PutLargeSprite
-
         .area DATA
 
 .nlist
