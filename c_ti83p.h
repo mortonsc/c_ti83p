@@ -40,6 +40,7 @@
 #define _TI_84_PLUS_INC_H_ 1
 
 #include <stdint.h>
+#include <stdbool.h>
 
 /*
  * These two variables specify the location where large text will be displayed.
@@ -507,6 +508,12 @@ typedef enum {
  * Returns the model of the calculator the program is running on.
  */
 Model CGetCalcModel();
+
+/*
+ * Returns true if the calculator battery is low.
+ * Otherwise returns false.
+ */
+bool CIsBatteryLow();
 
 /* Everything from here on out is contants taken from ti83plus.inc */
 

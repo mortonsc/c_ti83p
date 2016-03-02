@@ -56,3 +56,12 @@ TI83PlusSE:
 TI84PlusBasic:
         ld l,#2
 
+;; bool CIsBatteryLow();
+_CIsBatteryLow::
+        ld l,#0
+        in a,(2)
+        bit 0,a
+        ret nz ; batteries are good
+        inc l
+        ret    ; batteries are low
+
