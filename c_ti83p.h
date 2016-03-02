@@ -46,17 +46,16 @@
  * These two variables specify the location where large text will be displayed.
  * Calling PutC or PutS will change their values.
  */
-__at 0x844C uint8_t curCol;
-__at 0x844B uint8_t curRow;
+__at 0x844C uint8_t volatile curCol;
+__at 0x844B uint8_t volatile curRow;
 
 /*
  * These two variables specify the location where small text will be displayed.
- * Calling PutMap or VPutS will change their values.
  * Note that their values are measured in pixels, so if you want to go to
  * a new row of text, incrementing penRow will not be sufficient.
  */
-__at 0x86D7 uint8_t penCol;
-__at 0x86D8 uint8_t penRow;
+__at 0x86D7 uint8_t volatile penCol;
+__at 0x86D8 uint8_t volatile penRow;
 
 /* width of the screen, in pixels */
 #define SCREEN_WIDTH 96
@@ -141,14 +140,20 @@ void CPutMap(uint8_t c);
 /* prints s in the small font */
 void CVPutS(const uint8_t *s);
 
-/* waits for the user to press a key, then returns the keycode */
+/* waits for the user to press a key, then returns the keycode. */
 uint8_t CGetKey();
 
 /*
- * if the user is currently pressing a key, returns its keycode
- * note that this function uses different codes than GetKey()
+ * if the user is currently pressing a key, returns its keycode.
+ * note that this function uses different codes than CGetKey.
  */
 uint8_t CGetCSC();
+
+/*
+ * Returns if key is currently being pressed.
+ * key is one of the CGetCSC scancodes (prefixed with sk-)
+ */
+bool CIsKeyPressed(uint8_t key);
 
 /*
  * Any text printed after TextInvertOn is called will appear inverted

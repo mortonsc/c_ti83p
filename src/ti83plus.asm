@@ -58,20 +58,6 @@ _CClrLCDFull::
         bcall _ClrLCDFull
 	ret
 
-;; unsigned char CGetKey();
-_CGetKey::
-	bcall _getkey
-	ld l,a
-	ret
-
-
-;; unsigned char CGetCSC();
-_CGetCSC::
-        bcall _GetCSC
-	ld l,a
-	ret
-
-
 ;; void CTextInvertOn();
 _CTextInvertOn::
 	set textInverse,textFlags(iy)
