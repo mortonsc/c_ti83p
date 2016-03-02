@@ -84,6 +84,8 @@ APP_POP_ERRORH		.equ 0x5C
         call #0x5C
 .endm
 
+_LCD_BUSY_QUICK         .equ 0x000B ; NOT a bcall, but a normal function
+
 ;Page 0x1B ROM Calls
 ;--------------------------------
 _JErrorNo		.equ 0x4000

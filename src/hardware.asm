@@ -53,6 +53,45 @@ TI83PlusSE:
         ret
 TI84PlusBasic:
         ld l,#2
+        ret
+
+;; void CResetContrast();
+_CResetContrast::
+        ld a,(contrast)
+        add a,#0xD8
+        call _LCD_BUSY_QUICK
+        out (0x10),a
+        ret
+
+;; void CSetContrast(uint8_t level);
+_CSetContrast::
+        push ix
+        ld ix,#0
+        add ix,sp
+
+        ld a,4(ix)
+        cp #0x40
+        jr nc,SetContrastRet
+        add a,#0xC0
+        call _LCD_BUSY_QUICK
+        out (0x10),a
+SetContrastRet:
+        pop ix
+        ret
+
+;; void CLCDOn();
+_CLCDOn::
+        ld a,#3
+        call _LCD_BUSY_QUICK
+        out (0x10),a
+        ret
+
+;; void CLCDOff();
+_CLCDOff::
+        ld a,#2
+        call _LCD_BUSY_QUICK
+        out (0x10),a
+        ret
 
 ;; bool CIsBatteryLow();
 _CIsBatteryLow::

@@ -551,6 +551,8 @@ void CWaitMillis(uint8_t millis);
 
 /**********Hardware***********/
 
+#define MAX_CONTRAST 63
+
 typedef enum {
     TI_83_PLUS_BASIC = 0,
     TI_83_PLUS_SE,
@@ -568,6 +570,35 @@ Model CGetCalcModel();
  * Otherwise returns false.
  */
 bool CIsBatteryLow();
+
+/*
+ * Returns the contrast of the LCD to the level it was at when the program 
+ * was first started. You should call this function at the end of any program
+ * where you call CSetContrast.
+ */
+void CResetContrast();
+
+/*
+ * Changes the contrast setting of the LCD.
+ * Allowable levels range from 0, the lowest, to MAX_CONTRAST, the highest.
+ * If you call this function, you should call CResetContrast before the end
+ * of your program to return the contrast to where it was when the program
+ * was called.
+ */
+void CSetContrast(uint8_t level);
+
+/*
+ * Deactivates the LCD. Your program will continue to run while the LCD is off,
+ * but the calculator will appear to be off.
+ * You should call CLCDOn to turn the LCD back on before your program ends.
+ */
+void CLCDOff();
+
+/*
+ * Turns the LCD back on, if it has been turned off using CLCDOff.
+ */
+void CLCDOn();
+
 
 /* Everything from here on out is contants taken from ti83plus.inc */
 
