@@ -35,12 +35,11 @@
 
 ;; void CGetTime(Time *time);
 _CGetTime::
-        push ix
-        ld ix,#0
-        add ix,sp
+        pop bc
+        pop hl
+        push hl
+        push bc
 
-        ld l,4(ix)
-        ld h,5(ix)
         push hl         ; ConvOP1 destroys hl
         bcall _GetTime
         bcall _ConvOP1 ; first seconds
@@ -59,18 +58,15 @@ _CGetTime::
         bcall _ConvOP1 ; last hours
         pop hl
         ld (hl),a
-
-        pop ix
         ret
 
 ;; void CGetDate(Date *date);
 _CGetDate::
-        push ix
-        ld ix,#0
-        add ix,sp
+        pop bc
+        pop hl
+        push hl
+        push bc
 
-        ld l,4(ix)
-        ld h,5(ix)
         push hl         ; ConvOP1 destroys hl
         bcall _GetDate
         bcall _ConvOP1 ; first day
@@ -91,8 +87,6 @@ _CGetDate::
         ld (hl),e
         inc hl
         ld (hl),d
-
-        pop ix
         ret
 
 ;; uint32_t CStartTimer();

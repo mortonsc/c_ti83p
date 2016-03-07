@@ -39,101 +39,89 @@ _CNewLine::
 
 ;; void CDispChar(uint8_t c);
 _CDispChar::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
+	pop bc
+        pop hl
+        push hl
+        push bc
 
-	ld a,4(ix)
+	ld a,l
 	bcall _PutC
-	pop	ix
 	ret
 
 ;; void CDispStr(const uint8_t *s);
 _CDispStr::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
+	pop bc
+        pop hl
+        push hl
+        push bc
 
-	ld l,4(ix)
-	ld h,5(ix)
 	bcall _PutS
-	pop	ix
 	ret
 
 ;; void CDispInt(uint16_t i);
 _CDispInt::
-        push ix
-        ld ix,#0
-        add ix,sp
+        pop bc
+        pop hl
+        push hl
+        push bc
 
-        ld l,4(ix)
-        ld h,5(ix)
         bcall _DispHL
-        pop ix
         ret
 
 ;; void CDispTok(uint8_t tok);
 _CDispTok::
-        push ix
-        ld ix,#0
-        add ix,sp
+        pop hl
+        pop de
+        push de
+        push hl
 
-        ld e,4(ix)
         ld d,#0
         bcall _PutTokString
-        pop ix
         ret
 
 ;; void CDisp2ByteTok(uint8_t tok1, uint8_t tok2);
 _CDisp2ByteTok::
-        push ix
-        ld ix,#0
-        add ix,sp
+        pop hl
+        pop de
+        push de
+        push hl
 
-        ld d,4(ix)
-        ld e,5(ix)
         bcall _PutTokString
-        pop ix
         ret
 
 ;; void CTextChar(uint8_t c);
 _CTextChar::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
+	pop bc
+        pop hl
+        push hl
+        push bc
 
-	ld a,4(ix)
+	ld a,l
 	bcall _VPutMap
-	pop	ix
 	ret
 
 
 ;; void CTextStr(const uint8_t *s);
 _CTextStr::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
+	pop bc
+        pop hl
+        push hl
+        push bc
 
-	ld l,4(ix)
-	ld h,5(ix)
 	bcall _VPutS
-
-	pop	ix
 	ret
 
 ;; void CTextInt(uint16_t i);
 _CTextInt::
-        push ix
-        ld ix,#0
-        add ix,sp
+        pop bc
+        pop hl
+        push hl
+        push bc
 
-        ld l,4(ix)
-        ld h,5(ix)
         bcall _SetXXXXOP2
         bcall _OP2ToOP1
         ld a,#5
         bcall _DispOP1A
-        pop ix
         ret
 
 ;; void CTextTok(uint8_t tok);
@@ -152,5 +140,5 @@ _CTextTok::
 
 ;; void CText2ByteTok(uint8_t tok1, uint8_t tok2);
 _CText2ByteTok::
-        jr _CTextTok
+        jp _CTextTok
 
