@@ -70,26 +70,26 @@ _CRandInt::
 ; ouput a=answer 0<=a<b
 ; all registers are preserved except: af and bc
 ionRandom:
-	push	hl
-	push	de
-	ld	hl,(rand_seed)
-	ld	a,r
-	ld	d,a
-	ld	e,(hl)
-	add	hl,de
-	add	a,l
-	xor	h
-	ld	(rand_seed),hl
-	sbc	hl,hl
-	ld	e,a
-	ld	d,h
+        push	hl
+        push	de
+        ld	hl,(rand_seed)
+        ld	a,r
+        ld	d,a
+        ld	e,(hl)
+        add	hl,de
+        add	a,l
+        xor	h
+        ld	(rand_seed),hl
+        sbc	hl,hl
+        ld	e,a
+        ld	d,h
 randomLoop:
-	add	hl,de
-	djnz	randomLoop
-	ld	a,h
-	pop	de
-	pop	hl
-	ret
+        add	hl,de
+        djnz	randomLoop
+        ld	a,h
+        pop	de
+        pop	hl
+        ret
 
 rand_seed:
         .dw #0x0000

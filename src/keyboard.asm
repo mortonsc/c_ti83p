@@ -33,9 +33,9 @@
 
 ;; uint8_t CGetKey();
 _CGetKey::
-	bcall _getkey
-	ld l,a
-	ret
+        bcall _getkey
+        ld l,a
+        ret
 
 
 ;; uint8_t CGetCSC();

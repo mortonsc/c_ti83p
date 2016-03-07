@@ -100,46 +100,46 @@ _PutSprite::
 ; a=xc
 ; ix holds pointer
 ionPutSprite:
-	ld	e,l
-	ld	h,#0x00
-	ld	d,h
-	add	hl,de
-	add	hl,de
-	add	hl,hl
-	add	hl,hl
-	ld	e,a
-	and	#0x07
-	ld	c,a
-	srl	e
-	srl	e
-	srl	e
-	add	hl,de
-	ld	de,#plotSScreen
-	add	hl,de
+        ld	e,l
+        ld	h,#0x00
+        ld	d,h
+        add	hl,de
+        add	hl,de
+        add	hl,hl
+        add	hl,hl
+        ld	e,a
+        and	#0x07
+        ld	c,a
+        srl	e
+        srl	e
+        srl	e
+        add	hl,de
+        ld	de,#plotSScreen
+        add	hl,de
 putSpriteLoop1:
 sl1:	ld	d,(ix)
-	ld	e,#0x00
-	ld	a,c
-	or	a
-	jr	z,putSpriteSkip1
+        ld	e,#0x00
+        ld	a,c
+        or	a
+        jr	z,putSpriteSkip1
 putSpriteLoop2:
-	srl	d
-	rr	e
-	dec	a
-	jr	nz,putSpriteLoop2
+        srl	d
+        rr	e
+        dec	a
+        jr	nz,putSpriteLoop2
 putSpriteSkip1:
-	ld	a,(hl)
-	xor	d
-	ld	(hl),a
-	inc	hl
-	ld	a,(hl)
-	xor	e
-	ld	(hl),a
-	ld	de,#0x0B
-	add	hl,de
-	inc	ix
-	djnz	putSpriteLoop1
-	ret
+        ld	a,(hl)
+        xor	d
+        ld	(hl),a
+        inc	hl
+        ld	a,(hl)
+        xor	e
+        ld	(hl),a
+        ld	de,#0x0B
+        add	hl,de
+        inc	ix
+        djnz	putSpriteLoop1
+        ret
 
 ;; void PutLargeSprite(uint8_t x, uint8_t y, LargeSprite *sprite);
 _PutLargeSprite::

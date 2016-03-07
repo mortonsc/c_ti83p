@@ -34,8 +34,8 @@
 
 ;; void CNewLine();
 _CNewLine::
-	bcall _newline
-	ret
+        bcall _newline
+        ret
 
 ;; void CDispChar(uint8_t c);
 _CDispChar::
@@ -50,13 +50,13 @@ _CDispChar::
 
 ;; void CDispStr(const uint8_t *s);
 _CDispStr::
-	pop bc
+        pop bc
         pop hl
         push hl
         push bc
 
-	bcall _PutS
-	ret
+        bcall _PutS
+        ret
 
 ;; void CDispInt(uint16_t i);
 _CDispInt::
@@ -91,25 +91,25 @@ _CDisp2ByteTok::
 
 ;; void CTextChar(uint8_t c);
 _CTextChar::
-	pop bc
+        pop bc
         pop hl
         push hl
         push bc
 
-	ld a,l
-	bcall _VPutMap
-	ret
+        ld a,l
+        bcall _VPutMap
+        ret
 
 
 ;; void CTextStr(const uint8_t *s);
 _CTextStr::
-	pop bc
+        pop bc
         pop hl
         push hl
         push bc
 
-	bcall _VPutS
-	ret
+        bcall _VPutS
+        ret
 
 ;; void CTextInt(uint16_t i);
 _CTextInt::

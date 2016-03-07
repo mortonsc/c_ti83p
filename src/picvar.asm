@@ -47,9 +47,9 @@ PicName:
 
 ;; unsigned char *CRecallPic(unsigned char picNo);
 _CRecallPic::
-	push	ix
-	ld	ix,#0
-	add	ix,sp
+        push	ix
+        ld	ix,#0
+        add	ix,sp
         ld a,4(ix)
         call FindPicH
         jr c,PicFailed
