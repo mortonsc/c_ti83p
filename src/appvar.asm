@@ -126,7 +126,7 @@ _CArchiveAppVar::
         ld a,b
         or a   ; check if the var is already archived
         jr nz,ArchiveAppVarRet
-        AppOnErr ArchivePrgmRet
+        AppOnErr ArchiveAppVarRet
         bcall _Arc_Unarc
         AppOffErr
 ArchiveAppVarRet:

@@ -87,8 +87,8 @@ _CCreatePrgm::
         push ix
         ld ix,#0
         add ix,sp
-        ld a,#1
-        or a  ; reset zero flag
+        xor a
+        inc a  ; reset zero flag
         push af
         jr CreatePrgm
 
@@ -110,10 +110,10 @@ CreatePrgm:
         pop ix
 MakeNewPrgm:
         pop af ; recall what kind of program to make
-        AppOnErr InsufficientMem
         ld l,6(ix)
         ld h,7(ix) ; load the desired size
         push hl ; save the size
+        AppOnErr InsufficientMem
         jr z,MakeProtPrgm
         bcall _CreateProg
         jr InitPrgm
@@ -122,6 +122,7 @@ MakeProtPrgm:
         ld (OP1),a
         bcall _CreateProtProg
 InitPrgm:
+        AppOffErr
         pop hl
         ex de,hl ; now hl contains address, de contains size
         ld (hl),e ; store the size in the first two bytes of the new object
@@ -131,6 +132,7 @@ InitPrgm:
         pop ix
         ret
 InsufficientMem:
+        pop hl
         ld hl,#0 ; failed to create program, return null
         pop ix
         ret
