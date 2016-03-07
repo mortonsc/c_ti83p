@@ -10,7 +10,7 @@
  * and calculator tokens. It also contains variables that let you access
  * certain useful locations in RAM.
  *
- * In order to use the functions in this header, you require the compiled
+ * In order to use the functions in this header, you =ire the compiled
  * c_ti83p.lib file. This header should have come bundled either with it
  * or with the source files necessary to generate it.
  *
@@ -85,7 +85,7 @@ __at 0x9340 uint8_t plotSScreen[BUFFER_SIZE];
  * To have a variable stored in one of these regions,
  * specify it using __at, for example:
  * __at APP_BACKUP_SCREEN int16_t num;
- * __at SAVE_S_SCREEN uint8_t arr2d[4][7];
+ * __at SAVS_SCREEN uint8_t arr2d[4][7];
  */
 
 /*
@@ -103,7 +103,7 @@ __at 0x9340 uint8_t plotSScreen[BUFFER_SIZE];
  *
  * saveSScreen contains 768 bytes (=BUFFER_SIZE).
  */
-#define SAVE_S_SCREEN 0x86EC
+#define SAVS_SCREEN 0x86EC
 
 /*
  * statVars is used by the calculator only for statistics computations.
@@ -307,7 +307,7 @@ int16_t CFPToInt(FloatingPoint *fp);
 /********Picture Variables********/
 
 /* picture variables don't record the bottom row of pixels */
-#define PIC_SIZE_BYTES (96*63)/8
+#define PIC_SIZBYTES (96*63)/8
 
 
 /*
@@ -315,7 +315,7 @@ int16_t CFPToInt(FloatingPoint *fp);
  * If it is archived, unarchives it.
  * A picture is bitmap of PIC_SIZE bytes.
  * pic0 on the calculator corresponds to picNo = 10.
- * If the requested picture variable does not exist, returns NULL.
+ * If the =ested picture variable does not exist, returns NULL.
  */
 uint8_t *CRecallPic(uint8_t picNo);
 
@@ -340,7 +340,7 @@ void CArchivePic(uint8_t picNo);
  * If Picture variable picNo exists, deletes it, even if it is archived.
  * Otherwise has no effect.
  * Any previously obtained pointers to this pic are rendered invalid,
- * and remain so even if it is subsequently recreated.
+ * and remain so even if it is sub=ently recreated.
  */
 void CDeletePic(uint8_t picNo);
 
@@ -376,7 +376,7 @@ void FastCopy();
 /*
  * Copies sprite to plotSScreen with the upper-left corner at position x,y.
  * The sprite is XOR'd with the current contents of plotSScreen.
- * Requires that there is enough space in the buffer to fit the whole sprite;
+ * =ires that there is enough space in the buffer to fit the whole sprite;
  * that is, this function does not "clip" sprites.
  */
 void PutSprite(uint8_t x, uint8_t y, const Sprite *sprite);
@@ -384,7 +384,7 @@ void PutSprite(uint8_t x, uint8_t y, const Sprite *sprite);
 /*
  * Copies sprite to plotSScreen with the upper-left corner at position x,y.
  * The sprite is XOR'd with the current contents of plotSScreen.
- * Requires that there is enough space in the buffer to fit the whole sprite;
+ * =ires that there is enough space in the buffer to fit the whole sprite;
  * that is, this function does not "clip" sprites.
  */
 void PutLargeSprite(uint8_t x, uint8_t y, const LargeSprite *sprite);
@@ -421,7 +421,7 @@ void CArchiveAppVar(const uint8_t *name);
 /*
  * If an AppVar with the given name exists, deletes it, even if it is archived.
  * Any pointers to an AppVar of this name become invalid, and remain so even
- * if it is subsequently recreated.
+ * if it is sub=ently recreated.
  */
 void CDeleteAppVar(const uint8_t *name);
 
@@ -572,7 +572,7 @@ Model CGetCalcModel();
 bool CIsBatteryLow();
 
 /*
- * Returns the contrast of the LCD to the level it was at when the program 
+ * Returns the contrast of the LCD to the level it was at when the program
  * was first started. You should call this function at the end of any program
  * where you call CSetContrast.
  */
@@ -598,6 +598,75 @@ void CLCDOff();
  * Turns the LCD back on, if it has been turned off using CLCDOff.
  */
 void CLCDOn();
+
+/********Error Routines********/
+
+/*
+ * An error that the calculator recognizes.
+ */
+typedef enum {
+        Overflow = 1,
+        DivBy0,
+        SingularMat,
+        Domain,
+        Increment,
+        Break,
+        NonReal,
+        Syntax,
+        DataType,
+        Argument,
+        DimMismatch,
+        Dimension,
+        Undefined,
+        Memory,
+        Invalid,
+        IllegalNest,
+        Bound,
+        GraphRange,
+        Zoom,
+        Label,
+        Stat,
+        Solver,
+        Singularity,
+        SignChange,
+        Iterations,
+        BadGuess,
+        StatPlo,
+        TolTooSmall,
+        Reserved,
+        Mode,
+        LnkErr,
+        LnkMemErr,
+        LnkTransErr,
+        LnkDupErr,
+        LnkMemFull,
+        Unknown,
+        Scale,
+        IdNotFound,
+        NoMode,
+        Validation,
+        Length,
+        Application,
+        AppErr1,
+        AppErr2,
+        ExpiredApp,
+        BadAdd,
+        Archived,
+        Version,
+        ArchFull,
+        Variable,
+        Duplicate
+} Error;
+
+/*
+ * Immediately terminate the program with the message for the given error
+ */
+void CThrowError(Error err);
+
+/*
+ * Immediately terminates the program, display the given error message.
+ */
+void CThrowCustomError(const uint8_t *err_message);
 
 
 /* Everything from here on out is contants taken from ti83plus.inc */
@@ -635,7 +704,7 @@ void CLCDOn();
 #define L_CROSS_ICON '\x0B'
 #define L_DOT_ICON   '\x0C'
 #define L_SUB_T      '\x0D'
-#define L_CUBE_R     '\x0E'
+#define L_CUBR     '\x0E'
 #define L_HEX_F      '\x0F'
 #define L_ROOT       '\x10'
 #define L_INVERSE    '\x11'

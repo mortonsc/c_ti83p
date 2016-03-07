@@ -1180,6 +1180,10 @@ _initsmalleditlineop1	.equ 0x4D32
 _initsmalleditboxvar	.equ 0x4D35
 _initsmalleditboxop1	.equ 0x4D38
 ;?
+_ErrCustom1             .equ 0x4D41
+;?
+_ErrCustom2             .equ 0x4D44
+;?
 _AppStartMouse		.equ 0x4D47
 _AppEraseMouse		.equ 0x4D53
 ;?
