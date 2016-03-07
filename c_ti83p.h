@@ -601,6 +601,10 @@ void CLCDOn();
 
 /********Error Routines********/
 
+#define assert(cond) if (!(cond)) { \
+                         CThrowCustomError("assert"); \
+                     }
+
 /*
  * An error that the calculator recognizes.
  */
