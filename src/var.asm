@@ -33,13 +33,23 @@
 
 ;; void *CRecallPrgm(const uint8_t *name, uint16_t *size);
 _CRecallPrgm::
-        pop bc ;; return address 
-        pop hl ;; *name
-        pop de ;; *size
+        pop bc  ; return address 
+        pop hl  ; *name
+        pop de  ; *size
         push de
         push hl
         push bc
         ld a,#ProgObj
+        jmp RecallVar
+
+_CRecallAppVar::
+        pop bc  ; return address
+        pop hl  ; *name
+        pop de  ; *size
+        push de
+        push hl
+        push bc
+        ld a,#AppVarObj
         jmp RecallVar
 
 
@@ -75,12 +85,12 @@ RecallFailed:
         ret
 
 ;; void *CCreatePrgm(const uint8_t *name, uint16_t size);
-_CCreatePrgm
+_CCreatePrgm::
         ld hl,#_CreateProg
         ld (CreateVar),hl
-        pop de ;; return address 
-        pop hl ;; *name
-        pop bc ;; size
+        pop de  ; return address 
+        pop hl  ; *name
+        pop bc  ; size
         push bc
         push hl
         push de
@@ -88,16 +98,28 @@ _CCreatePrgm
         jmp CreateVar
 
 ;; void *CCreateProtPrgm(const uint8_t *name, uint16_t size);
-_CCreateProtPrgm
+_CCreateProtPrgm::
         ld hl,#_CreateProtProg
         ld (CreateVar),hl
-        pop de ;; return address 
-        pop hl ;; *name
-        pop bc ;; size
+        pop de  ; return address 
+        pop hl  ; *name
+        pop bc  ; size
         push bc
         push hl
         push de
         ld a,#ProtProgObj
+        jmp CreateVar
+
+_CCreateAppVar::
+        ld hl,#_CreateAppVar
+        ld (CreateVar),hl
+        pop de  ; return address
+        pop hl  ; *name
+        pop bc  ; size
+        push bc
+        push hl
+        push de
+        ld a,#AppVarObj
         jmp CreateVar
 
 ;; expects: *name in hl, var type token in a, size in bc,
@@ -129,21 +151,37 @@ InsufficientMem:
 
 ;; void CArchivePrgm(const uint8_t *name);
 _CArchivePrgm::
-        push ix
-        ld ix,#0
-        add ix,sp
-        ld l,4(ix)
-        ld h,5(ix)
-        call FindPrgmH
-        jr c,ArchivePrgmRet ; doesn't exist
+        pop bc ;; return address 
+        pop hl ;; *name
+        push hl
+        push bc
+        ld a,#ProgObj
+        jmp ArchiveVar
+
+;; void CArchiveAppVar(const uint8_t *name);
+_CArchiveAppVar::
+        pop bc ;; return address 
+        pop hl ;; *name
+        push hl
+        push bc
+        ld a,#AppVarObj
+        jmp ArchiveVar
+        
+
+;; expects: *name in hl, var type token in a
+ArchiveVar:
+        dec hl
+        rst rMOV9TOOP1
+        ld (OP1),a
+        bcall _ChkFindSym
+        jr c,ArchiveVarRet ; doesn't exist
         ld a,b
         or a   ; check if the var is already archived
-        jr nz,ArchivePrgmRet
-        AppOnErr ArchivePrgmRet
+        jr nz,ArchiveVarRet
+        AppOnErr ArchiveVarRet
         bcall _Arc_Unarc
         AppOffErr
 ArchivePrgmRet:
-        pop ix
         ret
 
 ;; void CDeletePrgm(const uint8_t *name);
@@ -153,7 +191,16 @@ _CDeletePrgm::
         push hl
         push bc
         ld a,#ProgObj
-        jmp RecallVar
+        jmp DeleteVar
+
+;; void CDeleteAppVar(const uint8_t *name);
+_CDeleteAppVar::
+        pop bc ;; return address 
+        pop hl ;; *name
+        push hl
+        push bc
+        ld a,#AppVarObj
+        jmp DeleteVar
 
 ;;  expects: *name in hl, var type token in a
 DeleteVar::
