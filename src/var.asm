@@ -21,7 +21,7 @@
 ;; This exception does not however invalidate any other reasons why
 ;; the executable file might be covered by the GNU General Public License.
 
-        .module prgm
+        .module var
 
         .area _DATA
 
@@ -204,23 +204,21 @@ RecallVar:
         ld a,b
         or a ; check if archived
         jr z,VarInRam
-        AppOnErr UnarchiveFailed
-        rst rPUSHREALO1     ; not sure if _Arc_Unarc destroys OP1
+        push ix         ; _Arc_Unarc destroys ix
+        AppOnErr RecallUnarchiveFailed
         bcall _Arc_Unarc
-        bcall _PopRealO1
         AppOffErr
-        bcall _ChkFindSym   ; find the new address
-                            ; _Arc_Unarc maybe does this for us?
+        pop ix
 VarInRam:
         pop hl      ; get *size
         ex de,hl    ; move address to hl (return value)
         ldi         ; store size in second argument
         ldi
         ret
-UnarchiveFailed:
-        bcall _PopRealO1
+RecallUnarchiveFailed:
+        pop ix
 RecallFailed:
-        pop hl
+        pop de
         ld hl,#0; return null for var address
         ret
 
@@ -264,7 +262,7 @@ ArchiveVar:
         AppOnErr ArchiveVarRet
         bcall _Arc_Unarc
         AppOffErr
-ArchivePrgmRet:
+ArchiveVarRet:
         ret
 
 ;;  expects: *name in hl, var type token in a
@@ -273,7 +271,7 @@ DeleteVar::
         rst rMOV9TOOP1
         ld (OP1),a
         bcall _ChkFindSym
-        jr c,DeletePrgmRet ; var doesn't exist (maybe not necessary?)
+        jr c,DeleteVarRet ; var doesn't exist (maybe not necessary?)
         bcall _DelVarArc
-DeletePrgmRet:
+DeleteVarRet:
         ret
