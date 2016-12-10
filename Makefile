@@ -2,8 +2,8 @@ ASM=sdasz80
 AFLAGS=-p -g -o
 ODIR=obj
 SDIR=src
-_RELS=ti83plus.rel picvar.rel floatingpoint.rel iongraphics.rel appvar.rel \
-       output.rel prgm.rel rand.rel time.rel hardware.rel keyboard.rel \
+_RELS=ti83plus.rel floatingpoint.rel iongraphics.rel \
+       output.rel var.rel rand.rel time.rel hardware.rel keyboard.rel \
 	   err.rel
 RELS := $(addprefix $(ODIR)/,$(_RELS))
 LIB=c_ti83p.lib

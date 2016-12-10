@@ -42,7 +42,7 @@ _CRecallPrgm::
         push hl
         push bc
         ld a,#ProgObj
-        jmp RecallVar
+        jp RecallVar
 
 
 ;; void CArchivePrgm(const uint8_t *name);
@@ -52,12 +52,12 @@ _CArchivePrgm::
         push hl
         push bc
         ld a,#ProgObj
-        jmp ArchiveVar
+        jp ArchiveVar
 
 ;; void *CCreatePrgm(const uint8_t *name, uint16_t size);
 _CCreatePrgm::
         ld hl,#_CreateProg
-        ld (CreateVar),hl
+        ld (CreateVarBcall),hl
         pop de  ; return address 
         pop hl  ; *name
         pop bc  ; size
@@ -65,12 +65,12 @@ _CCreatePrgm::
         push hl
         push de
         ld a,#ProgObj
-        jmp CreateVar
+        jp CreateVar
 
 ;; void *CCreateProtPrgm(const uint8_t *name, uint16_t size);
 _CCreateProtPrgm::
         ld hl,#_CreateProtProg
-        ld (CreateVar),hl
+        ld (CreateVarBcall),hl
         pop de  ; return address 
         pop hl  ; *name
         pop bc  ; size
@@ -78,7 +78,7 @@ _CCreateProtPrgm::
         push hl
         push de
         ld a,#ProtProgObj
-        jmp CreateVar
+        jp CreateVar
 
 ;; void CDeletePrgm(const uint8_t *name);
 _CDeletePrgm::
@@ -87,7 +87,7 @@ _CDeletePrgm::
         push hl
         push bc
         ld a,#ProgObj
-        jmp DeleteVar
+        jp DeleteVar
 
 ;; Functions for working with AppVars
 
@@ -100,12 +100,12 @@ _CRecallAppVar::
         push hl
         push bc
         ld a,#AppVarObj
-        jmp RecallVar
+        jp RecallVar
 
 ;; void CCreateAppVar(const uint8_t *name, uint16_t size)
 _CCreateAppVar::
         ld hl,#_CreateAppVar
-        ld (CreateVar),hl
+        ld (CreateVarBcall),hl
         pop de  ; return address
         pop hl  ; *name
         pop bc  ; size
@@ -113,7 +113,7 @@ _CCreateAppVar::
         push hl
         push de
         ld a,#AppVarObj
-        jmp CreateVar
+        jp CreateVar
 
 ;; void CArchiveAppVar(const uint8_t *name);
 _CArchiveAppVar::
@@ -122,7 +122,7 @@ _CArchiveAppVar::
         push hl
         push bc
         ld a,#AppVarObj
-        jmp ArchiveVar
+        jp ArchiveVar
 
 ;; void CDeleteAppVar(const uint8_t *name);
 _CDeleteAppVar::
@@ -131,7 +131,7 @@ _CDeleteAppVar::
         push hl
         push bc
         ld a,#AppVarObj
-        jmp DeleteVar
+        jp DeleteVar
 
 ;; Functions for working with PicVars
 PicName:
@@ -150,7 +150,7 @@ _CRecallPic::
     ld hl,#PicName
     ld de,#PicSize
     ld a,#PictObj
-    jmp RecallVar
+    jp RecallVar
 
 ;; unsigned char *CCreatePic(unsigned char picNo);
 _CCreatePic::
@@ -161,11 +161,11 @@ _CCreatePic::
     dec a
     ld (#PicName+1),a
     ld hl,#_CreatePict
-    ld (CreateVar),hl
+    ld (CreateVarBcall),hl
     ld hl,#PicName
     ld bc,#756  ; pics are always the same size
     ld a,#PictObj
-    jmp CreateVar
+    jp CreateVar
 
 ;; void CArchivePic(unsigned char picNo);
 _CArchivePic::
@@ -177,7 +177,7 @@ _CArchivePic::
     ld (#PicName+1),a
     ld hl,#PicName
     ld a,#PictObj
-    jmp ArchiveVar
+    jp ArchiveVar
 
 ;; void CDeletePic(unsigned char picNo)
 _CDeletePic::
@@ -189,7 +189,7 @@ _CDeletePic::
     ld (#PicName+1),a
     ld hl,#PicName
     ld a,#PictObj
-    jmp DeleteVar
+    jp DeleteVar
 
 ;; Function bodies (generic in the type of variable)
 
@@ -225,7 +225,7 @@ RecallFailed:
         ret
 
 ;; expects: *name in hl, var type token in a, size in bc,
-;;          bcall for creating in CreateVar
+;;          bcall for creating in CreateVarBcall
 CreateVar:
         push bc
         dec hl
@@ -238,7 +238,7 @@ MakeNewVar:
         pop bc
         AppOnErr InsufficientMem
         rst rBR_CALL        ; call bcall stored in next two bytes
-CreateVar:
+CreateVarBcall:
         .dw #_JError        ; should be overwritten
         AppOffErr
         ex de,hl ; now hl contains address
