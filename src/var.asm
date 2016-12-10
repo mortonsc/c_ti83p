@@ -259,9 +259,12 @@ ArchiveVar:
         ld a,b
         or a   ; check if the var is already archived
         jr nz,ArchiveVarRet
-        AppOnErr ArchiveVarRet
+        push ix
+        AppOnErr ArchiveVarErr
         bcall _Arc_Unarc
         AppOffErr
+ArchiveVarErr:
+        pop ix
 ArchiveVarRet:
         ret
 
