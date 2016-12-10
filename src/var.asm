@@ -35,7 +35,7 @@
 
 ;; void *CRecallPrgm(const uint8_t *name, uint16_t *size);
 _CRecallPrgm::
-        pop bc  ; return address 
+        pop bc  ; return address
         pop hl  ; *name
         pop de  ; *size
         push de
@@ -47,7 +47,7 @@ _CRecallPrgm::
 
 ;; void CArchivePrgm(const uint8_t *name);
 _CArchivePrgm::
-        pop bc ;; return address 
+        pop bc ;; return address
         pop hl ;; *name
         push hl
         push bc
@@ -58,7 +58,7 @@ _CArchivePrgm::
 _CCreatePrgm::
         ld hl,#_CreateProg
         ld (CreateVarBcall),hl
-        pop de  ; return address 
+        pop de  ; return address
         pop hl  ; *name
         pop bc  ; size
         push bc
@@ -71,7 +71,7 @@ _CCreatePrgm::
 _CCreateProtPrgm::
         ld hl,#_CreateProtProg
         ld (CreateVarBcall),hl
-        pop de  ; return address 
+        pop de  ; return address
         pop hl  ; *name
         pop bc  ; size
         push bc
@@ -82,7 +82,7 @@ _CCreateProtPrgm::
 
 ;; void CDeletePrgm(const uint8_t *name);
 _CDeletePrgm::
-        pop bc ;; return address 
+        pop bc ;; return address
         pop hl ;; *name
         push hl
         push bc
@@ -117,7 +117,7 @@ _CCreateAppVar::
 
 ;; void CArchiveAppVar(const uint8_t *name);
 _CArchiveAppVar::
-        pop bc ;; return address 
+        pop bc ;; return address
         pop hl ;; *name
         push hl
         push bc
@@ -126,7 +126,7 @@ _CArchiveAppVar::
 
 ;; void CDeleteAppVar(const uint8_t *name);
 _CDeleteAppVar::
-        pop bc ;; return address 
+        pop bc ;; return address
         pop hl ;; *name
         push hl
         push bc
@@ -225,20 +225,28 @@ RecallFailed:
 ;; expects: *name in hl, var type token in a, size in bc,
 ;;          bcall for creating in CreateVarBcall
 CreateVar:
-        push bc
+        ;; this function is done in a weird way
+        ;; (storing size in code area, etc)
+        ;; because normal ways all crashed for unclear reasons
+        ;; (something to do with the error handler)
+        ld (#VarSize),bc
         dec hl
         rst rMOV9TOOP1
         ld (OP1),a
         bcall _ChkFindSym
         jr c,MakeNewVar
+        push ix
         bcall _DelVarArc    ; delete the AppVar if it exists
+        pop ix
 MakeNewVar:
-        pop bc
         AppOnErr InsufficientMem
-        rst rBR_CALL        ; call bcall stored in next two bytes
+        ld hl,(#VarSize)
+        rst rBR_CALL    ; call bcall stored in next two bytes
 CreateVarBcall:
-        .dw #_JError        ; should be overwritten
+        .dw #_JError    ; caller overwrites
+AfterBcall:
         AppOffErr
+        ld bc,(#VarSize)
         ex de,hl ; now hl contains address
         ld (hl),c ; store the size in the first two bytes of the new object
         inc hl
@@ -248,6 +256,8 @@ CreateVarBcall:
 InsufficientMem:
         ld hl,#0 ; failed to create var, so return null
         ret
+VarSize:
+        .dw #0x0000  ; variable
 
 ;; expects: *name in hl, var type token in a
 ArchiveVar:
@@ -275,6 +285,8 @@ DeleteVar::
         ld (OP1),a
         bcall _ChkFindSym
         jr c,DeleteVarRet ; var doesn't exist (maybe not necessary?)
+        push ix     ; _DelVarArc destroys ix
         bcall _DelVarArc
+        pop ix
 DeleteVarRet:
         ret
