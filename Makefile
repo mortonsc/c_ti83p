@@ -4,7 +4,7 @@ ODIR=obj
 SDIR=src
 _RELS=ti83plus.rel floatingpoint.rel iongraphics.rel \
        output.rel var.rel rand.rel time.rel hardware.rel keyboard.rel \
-	   err.rel
+	   err.rel prgm.rel appvar.rel pic.rel
 RELS := $(addprefix $(ODIR)/,$(_RELS))
 LIB=c_ti83p.lib
 

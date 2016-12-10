@@ -31,170 +31,12 @@
 
         .area _CODE
 
-;; Functions for working with programs
 
-;; void *CRecallPrgm(const uint8_t *name, uint16_t *size);
-_CRecallPrgm::
-        pop bc  ; return address
-        pop hl  ; *name
-        pop de  ; *size
-        push de
-        push hl
-        push bc
-        ld a,#ProgObj
-        jp RecallVar
-
-
-;; void CArchivePrgm(const uint8_t *name);
-_CArchivePrgm::
-        pop bc ;; return address
-        pop hl ;; *name
-        push hl
-        push bc
-        ld a,#ProgObj
-        jp ArchiveVar
-
-;; void *CCreatePrgm(const uint8_t *name, uint16_t size);
-_CCreatePrgm::
-        ld hl,#_CreateProg
-        ld (CreateVarBcall),hl
-        pop de  ; return address
-        pop hl  ; *name
-        pop bc  ; size
-        push bc
-        push hl
-        push de
-        ld a,#ProgObj
-        jp CreateVar
-
-;; void *CCreateProtPrgm(const uint8_t *name, uint16_t size);
-_CCreateProtPrgm::
-        ld hl,#_CreateProtProg
-        ld (CreateVarBcall),hl
-        pop de  ; return address
-        pop hl  ; *name
-        pop bc  ; size
-        push bc
-        push hl
-        push de
-        ld a,#ProtProgObj
-        jp CreateVar
-
-;; void CDeletePrgm(const uint8_t *name);
-_CDeletePrgm::
-        pop bc ;; return address
-        pop hl ;; *name
-        push hl
-        push bc
-        ld a,#ProgObj
-        jp DeleteVar
-
-;; Functions for working with AppVars
-
-;; void *CRecallAppVar(const uint8_t *name, uint16_t *size)
-_CRecallAppVar::
-        pop bc  ; return address
-        pop hl  ; *name
-        pop de  ; *size
-        push de
-        push hl
-        push bc
-        ld a,#AppVarObj
-        jp RecallVar
-
-;; void CCreateAppVar(const uint8_t *name, uint16_t size)
-_CCreateAppVar::
-        ld hl,#_CreateAppVar
-        ld (CreateVarBcall),hl
-        pop de  ; return address
-        pop hl  ; *name
-        pop bc  ; size
-        push bc
-        push hl
-        push de
-        ld a,#AppVarObj
-        jp CreateVar
-
-;; void CArchiveAppVar(const uint8_t *name);
-_CArchiveAppVar::
-        pop bc ;; return address
-        pop hl ;; *name
-        push hl
-        push bc
-        ld a,#AppVarObj
-        jp ArchiveVar
-
-;; void CDeleteAppVar(const uint8_t *name);
-_CDeleteAppVar::
-        pop bc ;; return address
-        pop hl ;; *name
-        push hl
-        push bc
-        ld a,#AppVarObj
-        jp DeleteVar
-
-;; Functions for working with PicVars
-PicName:
-    .db tVarPict,0,0    ; pic number goes in 3rd byte
-PicSize:
-    .db 0,0             ; recall code needs somewhere to store size
-
-;; unsigned char *CRecallPic(unsigned char picNo);
-_CRecallPic::
-    pop hl  ; return address
-    pop af  ; picNo
-    push af
-    push hl
-    dec a
-    ld (#PicName+1),a
-    ld hl,#PicName
-    ld de,#PicSize
-    ld a,#PictObj
-    jp RecallVar
-
-;; unsigned char *CCreatePic(unsigned char picNo);
-_CCreatePic::
-    pop hl  ; return address
-    pop af  ; picNo
-    push af
-    push hl
-    dec a
-    ld (#PicName+1),a
-    ld hl,#_CreatePict
-    ld (CreateVarBcall),hl
-    ld hl,#PicName
-    ld bc,#756  ; pics are always the same size
-    ld a,#PictObj
-    jp CreateVar
-
-;; void CArchivePic(unsigned char picNo);
-_CArchivePic::
-    pop hl  ; return address
-    pop af  ; picNo
-    push af
-    push hl
-    dec a
-    ld (#PicName+1),a
-    ld hl,#PicName
-    ld a,#PictObj
-    jp ArchiveVar
-
-;; void CDeletePic(unsigned char picNo)
-_CDeletePic::
-    pop hl  ; return address
-    pop af  ; picNo
-    push af
-    push hl
-    dec a
-    ld (#PicName+1),a
-    ld hl,#PicName
-    ld a,#PictObj
-    jp DeleteVar
 
 ;; Function bodies (generic in the type of variable)
 
 ;; expects: *name in hl, var type token in a, pointer for size in de
-RecallVar:
+RecallVar::
         push de
         dec hl
         rst rMOV9TOOP1
@@ -223,12 +65,13 @@ RecallFailed:
         ret
 
 ;; expects: *name in hl, var type token in a, size in bc,
-;;          bcall for creating in CreateVarBcall
-CreateVar:
+;;          bcall for creating in de
+CreateVar::
         ;; this function is done in a weird way
         ;; (storing size in code area, etc)
         ;; because normal ways all crashed for unclear reasons
         ;; (something to do with the error handler)
+        ld (#CreateVarBcall),de
         ld (#VarSize),bc
         dec hl
         rst rMOV9TOOP1
@@ -260,7 +103,7 @@ VarSize:
         .dw #0x0000  ; variable
 
 ;; expects: *name in hl, var type token in a
-ArchiveVar:
+ArchiveVar::
         dec hl
         rst rMOV9TOOP1
         ld (OP1),a
