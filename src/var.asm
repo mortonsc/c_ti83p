@@ -31,6 +31,8 @@
 
         .area _CODE
 
+;; Functions for working with programs
+
 ;; void *CRecallPrgm(const uint8_t *name, uint16_t *size);
 _CRecallPrgm::
         pop bc  ; return address 
@@ -42,6 +44,54 @@ _CRecallPrgm::
         ld a,#ProgObj
         jmp RecallVar
 
+
+;; void CArchivePrgm(const uint8_t *name);
+_CArchivePrgm::
+        pop bc ;; return address 
+        pop hl ;; *name
+        push hl
+        push bc
+        ld a,#ProgObj
+        jmp ArchiveVar
+
+;; void *CCreatePrgm(const uint8_t *name, uint16_t size);
+_CCreatePrgm::
+        ld hl,#_CreateProg
+        ld (CreateVar),hl
+        pop de  ; return address 
+        pop hl  ; *name
+        pop bc  ; size
+        push bc
+        push hl
+        push de
+        ld a,#ProgObj
+        jmp CreateVar
+
+;; void *CCreateProtPrgm(const uint8_t *name, uint16_t size);
+_CCreateProtPrgm::
+        ld hl,#_CreateProtProg
+        ld (CreateVar),hl
+        pop de  ; return address 
+        pop hl  ; *name
+        pop bc  ; size
+        push bc
+        push hl
+        push de
+        ld a,#ProtProgObj
+        jmp CreateVar
+
+;; void CDeletePrgm(const uint8_t *name);
+_CDeletePrgm::
+        pop bc ;; return address 
+        pop hl ;; *name
+        push hl
+        push bc
+        ld a,#ProgObj
+        jmp DeleteVar
+
+;; Functions for working with AppVars
+
+;; void *CRecallAppVar(const uint8_t *name, uint16_t *size)
 _CRecallAppVar::
         pop bc  ; return address
         pop hl  ; *name
@@ -52,6 +102,96 @@ _CRecallAppVar::
         ld a,#AppVarObj
         jmp RecallVar
 
+;; void CCreateAppVar(const uint8_t *name, uint16_t size)
+_CCreateAppVar::
+        ld hl,#_CreateAppVar
+        ld (CreateVar),hl
+        pop de  ; return address
+        pop hl  ; *name
+        pop bc  ; size
+        push bc
+        push hl
+        push de
+        ld a,#AppVarObj
+        jmp CreateVar
+
+;; void CArchiveAppVar(const uint8_t *name);
+_CArchiveAppVar::
+        pop bc ;; return address 
+        pop hl ;; *name
+        push hl
+        push bc
+        ld a,#AppVarObj
+        jmp ArchiveVar
+
+;; void CDeleteAppVar(const uint8_t *name);
+_CDeleteAppVar::
+        pop bc ;; return address 
+        pop hl ;; *name
+        push hl
+        push bc
+        ld a,#AppVarObj
+        jmp DeleteVar
+
+;; Functions for working with PicVars
+PicName:
+    .db tVarPict,0,0    ; pic number goes in 3rd byte
+PicSize:
+    .db 0,0             ; recall code needs somewhere to store size
+
+;; unsigned char *CRecallPic(unsigned char picNo);
+_CRecallPic::
+    pop hl  ; return address
+    pop af  ; picNo
+    push af
+    push hl
+    dec a
+    ld (#PicName+1),a
+    ld hl,#PicName
+    ld de,#PicSize
+    ld a,#PictObj
+    jmp RecallVar
+
+;; unsigned char *CCreatePic(unsigned char picNo);
+_CCreatePic::
+    pop hl  ; return address
+    pop af  ; picNo
+    push af
+    push hl
+    dec a
+    ld (#PicName+1),a
+    ld hl,#_CreatePict
+    ld (CreateVar),hl
+    ld hl,#PicName
+    ld bc,#756  ; pics are always the same size
+    ld a,#PictObj
+    jmp CreateVar
+
+;; void CArchivePic(unsigned char picNo);
+_CArchivePic::
+    pop hl  ; return address
+    pop af  ; picNo
+    push af
+    push hl
+    dec a
+    ld (#PicName+1),a
+    ld hl,#PicName
+    ld a,#PictObj
+    jmp ArchiveVar
+
+;; void CDeletePic(unsigned char picNo)
+_CDeletePic::
+    pop hl  ; return address
+    pop af  ; picNo
+    push af
+    push hl
+    dec a
+    ld (#PicName+1),a
+    ld hl,#PicName
+    ld a,#PictObj
+    jmp DeleteVar
+
+;; Function bodies (generic in the type of variable)
 
 ;; expects: *name in hl, var type token in a, pointer for size in de
 RecallVar:
@@ -84,44 +224,6 @@ RecallFailed:
         ld hl,#0; return null for var address
         ret
 
-;; void *CCreatePrgm(const uint8_t *name, uint16_t size);
-_CCreatePrgm::
-        ld hl,#_CreateProg
-        ld (CreateVar),hl
-        pop de  ; return address 
-        pop hl  ; *name
-        pop bc  ; size
-        push bc
-        push hl
-        push de
-        ld a,#ProgObj
-        jmp CreateVar
-
-;; void *CCreateProtPrgm(const uint8_t *name, uint16_t size);
-_CCreateProtPrgm::
-        ld hl,#_CreateProtProg
-        ld (CreateVar),hl
-        pop de  ; return address 
-        pop hl  ; *name
-        pop bc  ; size
-        push bc
-        push hl
-        push de
-        ld a,#ProtProgObj
-        jmp CreateVar
-
-_CCreateAppVar::
-        ld hl,#_CreateAppVar
-        ld (CreateVar),hl
-        pop de  ; return address
-        pop hl  ; *name
-        pop bc  ; size
-        push bc
-        push hl
-        push de
-        ld a,#AppVarObj
-        jmp CreateVar
-
 ;; expects: *name in hl, var type token in a, size in bc,
 ;;          bcall for creating in CreateVar
 CreateVar:
@@ -149,25 +251,6 @@ InsufficientMem:
         ld hl,#0 ; failed to create var, so return null
         ret
 
-;; void CArchivePrgm(const uint8_t *name);
-_CArchivePrgm::
-        pop bc ;; return address 
-        pop hl ;; *name
-        push hl
-        push bc
-        ld a,#ProgObj
-        jmp ArchiveVar
-
-;; void CArchiveAppVar(const uint8_t *name);
-_CArchiveAppVar::
-        pop bc ;; return address 
-        pop hl ;; *name
-        push hl
-        push bc
-        ld a,#AppVarObj
-        jmp ArchiveVar
-        
-
 ;; expects: *name in hl, var type token in a
 ArchiveVar:
         dec hl
@@ -183,24 +266,6 @@ ArchiveVar:
         AppOffErr
 ArchivePrgmRet:
         ret
-
-;; void CDeletePrgm(const uint8_t *name);
-_CDeletePrgm::
-        pop bc ;; return address 
-        pop hl ;; *name
-        push hl
-        push bc
-        ld a,#ProgObj
-        jmp DeleteVar
-
-;; void CDeleteAppVar(const uint8_t *name);
-_CDeleteAppVar::
-        pop bc ;; return address 
-        pop hl ;; *name
-        push hl
-        push bc
-        ld a,#AppVarObj
-        jmp DeleteVar
 
 ;;  expects: *name in hl, var type token in a
 DeleteVar::
