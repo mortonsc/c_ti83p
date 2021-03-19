@@ -46,16 +46,16 @@
  * These two variables specify the location where large text will be displayed.
  * Calling PutC or PutS will change their values.
  */
-__at 0x844C uint8_t volatile curCol;
-__at 0x844B uint8_t volatile curRow;
+__at (0x844C) uint8_t volatile curCol;
+__at (0x844B) uint8_t volatile curRow;
 
 /*
  * These two variables specify the location where small text will be displayed.
  * Note that their values are measured in pixels, so if you want to go to
  * a new row of text, incrementing penRow will not be sufficient.
  */
-__at 0x86D7 uint8_t volatile penCol;
-__at 0x86D8 uint8_t volatile penRow;
+__at (0x86D7) uint8_t volatile penCol;
+__at (0x86D8) uint8_t volatile penRow;
 
 /* width of the screen, in pixels */
 #define SCREEN_WIDTH 96
@@ -76,7 +76,7 @@ __at 0x86D8 uint8_t volatile penRow;
  * plotSScreen is useful as a buffer to modify the screen,
  * so that it can be updated all at once.
  */
-__at 0x9340 uint8_t plotSScreen[BUFFER_SIZE];
+__at (0x9340) uint8_t plotSScreen[BUFFER_SIZE];
 
 
 /*
